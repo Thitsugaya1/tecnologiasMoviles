@@ -17,7 +17,9 @@ import android.widget.ProgressBar
 import android.widget.Toast
 
 import com.servizertech.myapplication.R
+import com.servizertech.myapplication.data.model.UserRol
 import com.servizertech.myapplication.ui.admin.TicketListActivity
+import com.servizertech.myapplication.ui.user.UserTicketListActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -59,11 +61,17 @@ class LoginActivity : AppCompatActivity() {
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
+                var int: Intent
+                if(loginResult.success.userRol === UserRol.Admin) {
+                    int = Intent(this, TicketListActivity::class.java);
+                }
+                else{
+                    int = Intent(this, UserTicketListActivity::class.java);
+                }
+                startActivity(int);
             }
             setResult(Activity.RESULT_OK)
 
-            val int = Intent(this, TicketListActivity::class.java);
-            startActivity(int);
             finish();
             //Complete and destroy login activity once successful
             //finish()
