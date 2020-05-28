@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import com.servizertech.myapplication.R
 import kotlinx.android.synthetic.main.activity_userticket_detail.*
 
 /**
@@ -22,7 +23,7 @@ class UserTicketDetailActivity : AppCompatActivity() {
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+                .setAction("Action", null).show()
         }
 
         // Show the Up button in the action bar.
@@ -42,29 +43,31 @@ class UserTicketDetailActivity : AppCompatActivity() {
             // using a fragment transaction.
             val fragment = UserTicketDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putString(UserTicketDetailFragment.ARG_ITEM_ID,
-                            intent.getStringExtra(UserTicketDetailFragment.ARG_ITEM_ID))
+                    putString(
+                        UserTicketDetailFragment.ARG_ITEM_ID,
+                        intent.getStringExtra(UserTicketDetailFragment.ARG_ITEM_ID)
+                    )
                 }
             }
 
             supportFragmentManager.beginTransaction()
-                    .add(R.id.userticket_detail_container, fragment)
-                    .commit()
+                .add(R.id.userticket_detail_container, fragment)
+                .commit()
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
-            when (item.itemId) {
-                android.R.id.home -> {
-                    // This ID represents the Home or Up button. In the case of this
-                    // activity, the Up button is shown. For
-                    // more details, see the Navigation pattern on Android Design:
-                    //
-                    // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+        when (item.itemId) {
+            android.R.id.home -> {
+                // This ID represents the Home or Up button. In the case of this
+                // activity, the Up button is shown. For
+                // more details, see the Navigation pattern on Android Design:
+                //
+                // http://developer.android.com/design/patterns/navigation.html#up-vs-back
 
-                    navigateUpTo(Intent(this, UserTicketListActivity::class.java))
-                    true
-                }
-                else -> super.onOptionsItemSelected(item)
+                navigateUpTo(Intent(this, UserTicketListActivity::class.java))
+                true
             }
+            else -> super.onOptionsItemSelected(item)
+        }
 }

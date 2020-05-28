@@ -41,7 +41,7 @@ class TicketListActivity : AppCompatActivity() {
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+                    .setAction("Action", null).show()
         }
 
         if (ticket_detail_container != null) {
@@ -59,12 +59,10 @@ class TicketListActivity : AppCompatActivity() {
         recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, twoPane)
     }
 
-    class SimpleItemRecyclerViewAdapter(
-        private val parentActivity: TicketListActivity,
-        private val values: List<DummyContent.DummyItem>,
-        private val twoPane: Boolean
-    ) :
-        RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
+    class SimpleItemRecyclerViewAdapter(private val parentActivity: TicketListActivity,
+                                        private val values: List<DummyContent.DummyItem>,
+                                        private val twoPane: Boolean) :
+            RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
 
         private val onClickListener: View.OnClickListener
 
@@ -78,9 +76,9 @@ class TicketListActivity : AppCompatActivity() {
                         }
                     }
                     parentActivity.supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.ticket_detail_container, fragment)
-                        .commit()
+                            .beginTransaction()
+                            .replace(R.id.ticket_detail_container, fragment)
+                            .commit()
                 } else {
                     val intent = Intent(v.context, TicketDetailActivity::class.java).apply {
                         putExtra(TicketDetailFragment.ARG_ITEM_ID, item.id)
@@ -92,7 +90,7 @@ class TicketListActivity : AppCompatActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.ticket_list_content, parent, false)
+                    .inflate(R.layout.ticket_list_content, parent, false)
             return ViewHolder(view)
         }
 
