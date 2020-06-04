@@ -4,3 +4,7 @@ Integrantes:
   Ignacio Martinez
   Nicolás Rojas
   Javier Silva
+
+Dependencias:
+Android SDK
+NetCore
