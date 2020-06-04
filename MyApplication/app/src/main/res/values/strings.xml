@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">TICKETAPP</string>
     <!-- Strings related to login -->
+    <string name="login_title">TICKETAPP</string>
+    <string name="login_button2">CANCEL</string>
+    <string name="login_text1">¿Olvidaste tu cuenta?</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sing in</string>
@@ -14,7 +17,4 @@
     <string name="title_userticket_list">UserTickets</string>
     <string name="title_userticket_detail">UserTicket Detail</string>
     <string name="recov_password">Reset Password</string>
-    <string name="login_title">TICKETAPP</string>
-    <string name="login_button2">CANCEL</string>
-    <string name="login_text1">¿Olvidaste tu cuenta?</string>
 </resources>
