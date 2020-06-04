@@ -124,6 +124,14 @@ class LoginActivity : AppCompatActivity() {
     private fun showLoginFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
+
+    public fun onClickCancel(v: View) {
+        finish();
+    }
+
+    public fun onClickForgotAccount(v: View) {
+        Toast.makeText(applicationContext, "Not Implemented", Toast.LENGTH_SHORT ).show();
+    }
 }
 
 /**
