@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using TecnologiasMovilesApi.Models;
 
-namespace api
+namespace TecnologiasMovilesApi
 {
     public class Startup
     {
@@ -25,27 +20,33 @@ namespace api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //SQLite DbConfifuration
+            services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlite("Data Source=dataBaseApi.db"));
+            // Add CORS policy
+            services.AddCors();
+            services.AddJwtBearerAuthentication(); //JwtConfiguration
+            services.AddSwaggerDocumentation(); //Swagger
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
-
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+            
+            //app.UseHttpsRedirection();
             app.UseRouting();
-
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseSwaggerDocumentation();
+            context.Database.EnsureCreated();
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
