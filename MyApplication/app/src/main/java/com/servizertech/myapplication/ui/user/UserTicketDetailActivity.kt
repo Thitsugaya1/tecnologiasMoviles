@@ -5,8 +5,10 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import android.view.View
 import com.servizertech.myapplication.R
 import kotlinx.android.synthetic.main.activity_userticket_detail.*
+import com.servizertech.myapplication.ui.user.pedirticket.PedirTicket;
 
 /**
  * An activity representing a single UserTicket detail screen. This
@@ -20,11 +22,6 @@ class UserTicketDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_userticket_detail)
         setSupportActionBar(detail_toolbar)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
 
         // Show the Up button in the action bar.
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -70,4 +67,9 @@ class UserTicketDetailActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+
+    public fun onClickFab(view: View){
+        var intent = Intent(this, PedirTicket::class.java)
+        startActivity(intent)
+    }
 }

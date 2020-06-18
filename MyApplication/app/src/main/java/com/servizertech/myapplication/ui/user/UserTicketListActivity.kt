@@ -12,6 +12,7 @@ import android.widget.TextView
 import com.servizertech.myapplication.R
 
 import com.servizertech.myapplication.ui.user.dummy.DummyContent
+import com.servizertech.myapplication.ui.user.pedirticket.PedirTicket
 import kotlinx.android.synthetic.main.activity_userticket_list.*
 import kotlinx.android.synthetic.main.userticket_list_content.view.*
 import kotlinx.android.synthetic.main.userticket_list.*
@@ -39,11 +40,6 @@ class UserTicketListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = title
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-
         if (userticket_detail_container != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
@@ -57,6 +53,11 @@ class UserTicketListActivity : AppCompatActivity() {
 
     private fun setupRecyclerView(recyclerView: RecyclerView) {
         recyclerView.adapter = SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, twoPane)
+    }
+
+    public fun onClickFab(view: View){
+        var intent = Intent(this, PedirTicket::class.java)
+        startActivity(intent)
     }
 
     class SimpleItemRecyclerViewAdapter(
@@ -113,5 +114,6 @@ class UserTicketListActivity : AppCompatActivity() {
             val idView: TextView = view.id_text
             val contentView: TextView = view.content
         }
+
     }
 }
