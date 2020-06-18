@@ -17,4 +17,14 @@
     <string name="title_userticket_list">UserTickets</string>
     <string name="title_userticket_detail">UserTicket Detail</string>
     <string name="recov_password">Reset Password</string>
+    <string name="usr_pedir_ticket_descr_srv">Descripción del Servicio:</string>
+    <string name="usr_pedir_ticket_hint_nombres">Nombre</string>
+    <string name="usr_pedir_ticket_hint_apellidos">Apellidos</string>
+    <string name="usr_pedir_ticket_direccion">Dirección</string>
+    <string name="usr_pedir_ticket_hint_direccion">Calle, Número, Comuna</string>
+    <string name="usr_pedir_ticket_hint_desde">Desde</string>
+    <string name="usr_pedir_ticket_fecha">Fecha</string>
+    <string name="usr_pedir_ticket_hint_hasta">Hasta</string>
+    <string name="usr_pedir_ticket_btn_cancelar">Cancelar</string>
+    <string name="usr_pedir_ticket_btn_enviar">Enviar Peticion</string>
 </resources>
