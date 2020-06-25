@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using TecnologiasMovilesApi.Models;
 
-namespace TecnologiasMovilesApi.Repository
+
+namespace TecnologiasMovilesApi.Services.DataBase.Repository
 {
-    public class Repository<TEntity, TKey> where TEntity : class where TKey : IComparable
+    public class Repository<TEntity, TKey> : IRepository<TEntity, TKey>  where TEntity : class where TKey : IComparable
     {
         protected readonly ApplicationDbContext Context;
         public Repository(ApplicationDbContext context) => Context = context;
@@ -14,18 +14,20 @@ namespace TecnologiasMovilesApi.Repository
         public TEntity this[TKey index]
         {
             get => Get(index);
-            set { Update(value); Context.SaveChanges(); }
+            set => Update(value); 
         }
-        private TEntity Get(TKey key) => Context.Set<TEntity>().Find(key);
-        public IQueryable<TEntity> GetAll() => Context.Set<TEntity>();
-        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate) 
+        public TEntity Get(TKey key) => Context.Set<TEntity>().Find(key);
+        public IEnumerable<TEntity> GetAll() => Context.Set<TEntity>();
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate) 
             =>Context.Set<TEntity>().Where(predicate);
-        public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate) 
+        public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
             =>Context.Set<TEntity>().SingleOrDefault(predicate);
         public void Add(TEntity entity) => Context.Set<TEntity>().Add(entity);
-        private void Update(TEntity entity) => Context.Set<TEntity>().Update(entity);
+        public void Update(TEntity entity) => Context.Set<TEntity>().Update(entity);
         public void AddRange(IEnumerable<TEntity> entities) => Context.Set<TEntity>().AddRange(entities);
         public void Remove(TEntity entity) => Context.Set<TEntity>().Remove(entity);
+        public void Remove(TKey key) => Remove(Get(key));
         public void RemoveRange(IEnumerable<TEntity> entities) => Context.Set<TEntity>().RemoveRange(entities);
+        public bool Exists(TKey key) => Context.Set<TEntity>().Find(key) != null;
     }
 }

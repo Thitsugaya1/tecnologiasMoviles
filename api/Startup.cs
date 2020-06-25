@@ -4,7 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PS3_PS4CheatDatabaseRepositoryApi.Services;
+using PS3_PS4CheatDatabaseRepositoryApi.Services.Imp;
 using TecnologiasMovilesApi.Models;
+using TecnologiasMovilesApi.Services.DataBase;
+using TecnologiasMovilesApi.Services.Imp;
 
 namespace TecnologiasMovilesApi
 {
@@ -24,7 +28,10 @@ namespace TecnologiasMovilesApi
             services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlite("Data Source=dataBaseApi.db"));
             // Add CORS policy
             services.AddCors();
-            services.AddJwtBearerAuthentication(); //JwtConfiguration
+            services.AddAuthenticationConfiguration(Configuration["Jwt:key"]);
+            services.AddScoped<IUnitOfWork,UnitOfWork>();
+            services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddSwaggerDocumentation(); //Swagger
             services.AddControllers();
         }

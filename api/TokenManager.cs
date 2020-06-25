@@ -2,21 +2,35 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using TecnologiasMovilesApi.Models;
+using TecnologiasMovilesApi.Services.DataBase;
+using TecnologiasMovilesApi.ViewModels;
 
 namespace TecnologiasMovilesApi
 {
     public static class TokenManager
     {
-        private static readonly string Secret =
-            "ERMN05OPLoDvbTTa/QkqLNMI7cPLguaRyHzyg7n5qNBVjQmtBhz4SzYh4NBVCXi3KJHlSXKP+oi2+bXr6CUYTR==";
 
-        public static IServiceCollection AddJwtBearerAuthentication(this IServiceCollection services)
+        public static IServiceCollection AddAuthenticationConfiguration(this IServiceCollection services, string secret)
         {
-            byte[] key = Convert.FromBase64String(Secret);
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+            
+            /*
+            services.Configure<IdentityOptions>(o => 
+            {
+                o.SignIn.RequireConfirmedEmail = true;
+            });*/
+
+            byte[] key = Convert.FromBase64String(secret);
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -30,25 +44,30 @@ namespace TecnologiasMovilesApi
             });
             return services;
         }
-        
-        public static string GenerateToken(User user)
+
+        public static TokenViewModel GenerateToken(this string email, string secret)
         {
-            byte[] key = Convert.FromBase64String(Secret);
+            byte[] key = Convert.FromBase64String(secret);
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Rol) 
+                    new Claim(ClaimTypes.Email, email),
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(5),
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(securityKey,
                     SecurityAlgorithms.HmacSha256Signature)
             };
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
-            return handler.WriteToken(token);
+
+            return new TokenViewModel
+            {
+                Token = handler.WriteToken(token),
+                IssuedAt = DateTime.UtcNow,
+                ExpireDate = descriptor.Expires
+            };
         }
     }
 }
