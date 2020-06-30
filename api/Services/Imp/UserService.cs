@@ -41,7 +41,7 @@ namespace TecnologiasMovilesApi.Services.Imp
                     result.Errors.Select(e => e.Description));
         }
 
-        public async Task<ResponseViewModel> LoginUserAsync(RegisterViewModel model)
+        public async Task<ResponseViewModel> LoginUserAsync(LoginViewModel model)
         {
             var user = await _userManger.FindByEmailAsync(model.Email);
             if (user == null) return new ResponseViewModel("There is no user with that Email address", false);
