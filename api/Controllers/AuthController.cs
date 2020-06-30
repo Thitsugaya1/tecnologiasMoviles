@@ -27,8 +27,9 @@ namespace TecnologiasMovilesApi.Controllers
             return result.Success ? (ActionResult<ResponseViewModel>) Ok(result) : BadRequest(result);
         }
 
-        [HttpPost("Login")]
-        public async Task<ActionResult<ResponseViewModel>> LoginAsync(RegisterViewModel model)
+				// I'm creating a new token, So I'm *post*ing a new auth. 
+        [HttpPost]
+        public async Task<ActionResult<ResponseViewModel>> LoginAsync(LoginViewModel model)
         {
             if (!ModelState.IsValid) return BadRequest("Some properties are not valid");
             var result = await _userService.LoginUserAsync(model);
