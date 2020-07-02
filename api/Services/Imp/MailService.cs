@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using TecnologiasMovilesApi.ViewModels;
 
-namespace PS3_PS4CheatDatabaseRepositoryApi.Services.Imp
+namespace TecnologiasMovilesApi.Services.Imp
 {
     public class MailService : IMailService
     {

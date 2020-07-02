@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TecnologiasMovilesApi.Models;
@@ -9,15 +10,15 @@ namespace TecnologiasMovilesApi.Services.DataBase
     {
         
         private readonly ApplicationDbContext _context;
-
-        public UserManager<IdentityUser> userManager;
+        
         public IRepository<Ticket, int> Tickets { get; set; }
         public IRepository<UbicacionGPS, int> UbicacionGPS { get; set; }
+        public IRepository<IdentityUser, Guid> Users { get; set; }
         
-        public UnitOfWork(ApplicationDbContext context, UserManager<IdentityUser> _userManager)
+        public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
-            userManager = _userManager;
+            Users = new Repository<IdentityUser, Guid>(_context);
             Tickets = new Repository<Ticket, int>(_context);
             UbicacionGPS = new Repository<UbicacionGPS, int>(_context);
         }

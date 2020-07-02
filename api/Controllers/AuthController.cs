@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using PS3_PS4CheatDatabaseRepositoryApi.Services;
+using TecnologiasMovilesApi.Services;
 using TecnologiasMovilesApi.ViewModels;
 
 namespace TecnologiasMovilesApi.Controllers

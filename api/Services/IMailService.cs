@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using TecnologiasMovilesApi.ViewModels;
 
-namespace PS3_PS4CheatDatabaseRepositoryApi.Services
+namespace TecnologiasMovilesApi.Services
 {
     public interface IMailService
     {
