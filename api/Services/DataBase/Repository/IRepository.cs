@@ -6,6 +6,7 @@ namespace TecnologiasMovilesApi.Services.DataBase.Repository
 {
     public interface IRepository<TEntity, in TKey> where TEntity : class where TKey : IComparable
     {
+        TEntity this [TKey key] { get; set; }
         TEntity Get(TKey key);
         IEnumerable<TEntity> GetAll();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);

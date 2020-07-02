@@ -12,6 +12,7 @@ namespace TecnologiasMovilesApi.Services.DataBase
         //public Repository<Profile, string> Profiles { get; set; }
         public IRepository<Ticket,int> Tickets { get; set; }
         public IRepository<UbicacionGPS,int> UbicacionGPS { get; set; }
+        public IRepository<IdentityUser, Guid> Users { get; set; }
 
         int SaveChanges();
         Task<int> SaveChangesAsync();

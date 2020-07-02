@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using PS3_PS4CheatDatabaseRepositoryApi.Services;
+using Microsoft.OpenApi.Extensions;
 using TecnologiasMovilesApi.Models;
 using TecnologiasMovilesApi.ViewModels;
 
@@ -14,12 +17,21 @@ namespace TecnologiasMovilesApi.Services.Imp
         private readonly UserManager<IdentityUser> _userManger;
         private readonly IMailService _mailService;
         private readonly IConfiguration _configuration;
+        private RoleManager<IdentityRole> _roleManager;
 
-        public UserService(UserManager<IdentityUser> userManager, IMailService mailService, IConfiguration configuration)
+        public UserService(UserManager<IdentityUser> userManager, IMailService mailService, IConfiguration configuration, RoleManager<IdentityRole> role)
         {
+            _roleManager = role;
             _userManger = userManager;
             _mailService = mailService;
             _configuration = configuration;
+            
+            /*
+            role.CreateAsync(new IdentityRole(UserRol.Administrador.GetDisplayName()));
+            role.CreateAsync(new IdentityRole(UserRol.Cliente.GetDisplayName()));
+            role.CreateAsync(new IdentityRole(UserRol.Huesped.GetDisplayName()));*/
+            
+
         }
 
         public async Task<ResponseViewModel> RegisterUserAsync(RegisterViewModel model)
@@ -33,6 +45,7 @@ namespace TecnologiasMovilesApi.Services.Imp
                 UserName = model.UserName,
             };
             var result = await _userManger.CreateAsync(user, model.Password);
+            //await _userManger.AddToRoleAsync(user, UserRol.Cliente.GetDisplayName());
             return result.Succeeded
                 ? await _mailService.SendConfirmationEmailAsync(user.Email,
                     await _userManger.GenerateEmailConfirmationTokenAsync(user))
@@ -80,6 +93,20 @@ namespace TecnologiasMovilesApi.Services.Imp
             var result = await _userManger.ResetPasswordAsync(user, token, model.Password);
             return result.Succeeded
                 ? new ResponseViewModel("Password has been reset successfully!", true)
+                : new ResponseViewModel("Something went wrong", false,
+                    result.Errors.Select(e => e.Description));
+        }
+        public Task<IdentityUser> GetUserByMail(string mail) => _userManger.FindByEmailAsync(mail);
+        public async Task<IEnumerable<IdentityUser>> GetAllUsers() => await _userManger.Users.ToListAsync();
+
+        public async Task<IEnumerable<string>> GetAllUserMail()
+            => await _userManger.Users.Select(x => x.Email).ToListAsync();
+        public async Task<ResponseViewModel> AddRol(string mail, UserRol rol)
+        {
+            var user = await _userManger.FindByEmailAsync(mail);
+            var result = await _userManger.AddToRoleAsync(user, rol.GetDisplayName());
+            return result.Succeeded
+                ? new ResponseViewModel($"{rol.GetDisplayName()} added", true)
                 : new ResponseViewModel("Something went wrong", false,
                     result.Errors.Select(e => e.Description));
         }

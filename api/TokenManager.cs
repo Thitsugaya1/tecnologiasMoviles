@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Extensions;
+using TecnologiasMovilesApi.Models;
 using TecnologiasMovilesApi.Services.DataBase;
 using TecnologiasMovilesApi.ViewModels;
 
@@ -28,10 +32,12 @@ namespace TecnologiasMovilesApi
             byte[] key = Convert.FromBase64String(secret);
             services.AddAuthentication(options =>
             {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
+                options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     RequireExpirationTime = true,
@@ -47,13 +53,15 @@ namespace TecnologiasMovilesApi
 
         public static TokenViewModel GenerateToken(this string email, string secret)
         {
+            
             byte[] key = Convert.FromBase64String(secret);
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
+                Subject = new ClaimsIdentity( new []
                 {
-                    new Claim(ClaimTypes.Email, email),
+                    new Claim(ClaimTypes.Name, email),
+                    //new Claim(ClaimTypes.Role, UserRol.Administrador.GetDisplayName())
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(securityKey,

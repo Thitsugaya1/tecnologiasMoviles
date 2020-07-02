@@ -1,6 +1,6 @@
 namespace TecnologiasMovilesApi.Models
 {
-    public class UbicacionGPS
+    public class UbicacionGPS : BaseEntity
     {
         public int Id { get; set; }
         public double Latitud { get; set; }

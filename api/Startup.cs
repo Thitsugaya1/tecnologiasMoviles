@@ -1,14 +1,18 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PS3_PS4CheatDatabaseRepositoryApi.Services;
-using PS3_PS4CheatDatabaseRepositoryApi.Services.Imp;
+using SQLitePCL;
 using TecnologiasMovilesApi.Models;
+using TecnologiasMovilesApi.Services;
 using TecnologiasMovilesApi.Services.DataBase;
+using TecnologiasMovilesApi.Services.DataBase.Repository;
 using TecnologiasMovilesApi.Services.Imp;
+using TecnologiasMovilesApi.ViewModels;
 
 namespace TecnologiasMovilesApi
 {
@@ -24,14 +28,16 @@ namespace TecnologiasMovilesApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //SQLite DbConfifuration
+          
+            Mapper.Initialize(cfg => cfg.AddProfile<MappingProfile>());
+            services.AddAutoMapper();
             services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlite("Data Source=dataBaseApi.db"));
-            // Add CORS policy
             services.AddCors();
             services.AddAuthenticationConfiguration(Configuration["Jwt:key"]);
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUnitOfWork,UnitOfWork>();
             services.AddSwaggerDocumentation(); //Swagger
             services.AddControllers();
         }
@@ -50,6 +56,7 @@ namespace TecnologiasMovilesApi
             
             //app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSwaggerDocumentation();
             context.Database.EnsureCreated();
