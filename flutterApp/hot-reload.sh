@@ -1,1 +1,0 @@
-tmux send-keys 'r'
