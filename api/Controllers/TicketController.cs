@@ -13,10 +13,11 @@ namespace TecnologiasMovilesApi.Controllers
     {
         private readonly IUnitOfWork _context;
         public TicketController(IUnitOfWork unitOfWork) => _context = unitOfWork;
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] 
-        [HttpPost]
+        
+        [Authorize][HttpPost]
         public IActionResult CreateTicket(Ticket ticket)
         {
+            ticket.ClienteEmail = User.Identity.Name;
             _context.Tickets.Add(ticket);
             return Ok(_context.SaveChanges());
         }
