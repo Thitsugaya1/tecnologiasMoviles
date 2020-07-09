@@ -4,6 +4,8 @@ class GPSLocation{
   String direccion;
   int id;
 
+  GPSLocation();
+
   GPSLocation.fromJson(Map<String, dynamic> json):
     latitud = json['latitud'],
     longitud = json['longitud'],
