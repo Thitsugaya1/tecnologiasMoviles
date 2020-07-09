@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:ticketapp/data/gpsLocation.dart';
+import 'package:ticketapp/ui/Utilities.dart';
 
 class NewTicketForm extends StatefulWidget {
   @override
@@ -16,6 +18,7 @@ class _NewTicketFormState extends State<NewTicketForm> {
   final initialTimeOfDayController = TextEditingController();
   final endDateController =  TextEditingController();
   final endTimeOfDayController = TextEditingController();
+  final directionTextController = TextEditingController();
 
   String dateText(DateTime date){
     if(date != null){
@@ -75,6 +78,7 @@ class _NewTicketFormState extends State<NewTicketForm> {
               labelText: "Direccion"
             ),
             onTap: getGeo,
+            controller: directionTextController,
           ),
           Text('Fecha'),
           seleccionDateTimeDesde(initialDateController,
@@ -193,13 +197,34 @@ class _NewTicketFormState extends State<NewTicketForm> {
     );
   }
 
+  void raiseLoadingModal(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Utilities.loadingAlert();
+      }  
+      );
+  }
+
+  
+
   Future<void> getGeo() async {
+    GPSLocation loc = GPSLocation();
+    raiseLoadingModal();
     try {
       var geo = Geolocator();
-    var q = geo.getCurrentPosition();
-    print(q);
+      var q = await geo.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+      print(q);
+      loc.longitud = q.longitude;
+      loc.latitud = q.latitude;
+      loc.direccion = 'Placeholder: ' + loc.longitud.toString() + " " + loc.latitud.toString();
     } catch (e) {
       print(e);
+      loc.latitud = 0;
+      loc.longitud = 0;
+      loc.direccion = "placeholder";
     }
+    Navigator.pop(context);
+    directionTextController.value = directionTextController.value.copyWith(text: loc.direccion);
   }
 }
