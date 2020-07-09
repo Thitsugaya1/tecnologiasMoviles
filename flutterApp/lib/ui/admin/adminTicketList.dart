@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ticketapp/data/gpsLocation.dart';
 import 'package:ticketapp/data/ticket.dart';
+import 'package:ticketapp/ui/common/detalleTicket.dart';
 
 class AdminTicketListPage extends StatelessWidget {
   const AdminTicketListPage({Key key}) : super(key: key);
@@ -76,6 +77,7 @@ class _AdminTicketListState extends State<AdminTicketList> {
       ),
       onTap: () {
         print(t.id.toString());
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TicketPage(t)));
       },
     );
   }
