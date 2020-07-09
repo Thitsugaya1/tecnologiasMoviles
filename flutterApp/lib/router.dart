@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:ticketapp/Models.dart';
+import 'package:ticketapp/data/Models.dart';
 import 'package:ticketapp/data/httpService.dart';
+import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/data/userService.dart';
 import 'package:ticketapp/ui/user/NewTicketForm.dart';
 import 'package:ticketapp/ui/login.dart';
 import 'package:ticketapp/ui/notImplementedPage.dart';
 import 'package:ticketapp/ui/user/userPage.dart';
 
-import 'ui/login.dart';
-import 'ui/user/userPage.dart';
-
 class RouteGenerator {
   HttpService _httpService;
   UserService _userService;
-  RouteGenerator(this._httpService, this._userService);
+  TicketService _ticketService;
+  RouteGenerator(this._httpService, this._userService, this._ticketService);
 
   Route<dynamic> generateRoute(RouteSettings settings){
     final args = settings.arguments;
@@ -32,7 +31,7 @@ class RouteGenerator {
       case '/':
         return MaterialPageRoute(builder: (_) => UserMainPage() );
       case '/tickets/new':
-        return MaterialPageRoute(builder: (_) => NewTicketForm());
+        return MaterialPageRoute(builder: (_) => NewTicketForm(_ticketService));
       default:
         return notImplemented();
     }
