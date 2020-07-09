@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ticketapp/data/gpsLocation.dart';
+import 'package:ticketapp/data/ticket.dart';
+import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/ui/Utilities.dart';
 
 class NewTicketForm extends StatefulWidget {
+  TicketService _service;
+
+  NewTicketForm(this._service);
+
   @override
-  _NewTicketFormState createState() => _NewTicketFormState();
+  _NewTicketFormState createState() => _NewTicketFormState(this._service);
 }
 
 class _NewTicketFormState extends State<NewTicketForm> {
   DateTime initialDate = DateTime.now();
-  TimeOfDay initialTimeOfDay;
+  TimeOfDay initialTimeOfDay = TimeOfDay.now();
   DateTime endDate;
   TimeOfDay endTimeOfDay;
+  GPSLocation location;
+  TicketService _service;
+
+  _NewTicketFormState(this._service);
 
   final initialDateController = TextEditingController();
   final initialTimeOfDayController = TextEditingController();
@@ -127,8 +137,17 @@ class _NewTicketFormState extends State<NewTicketForm> {
     Navigator.pop(context);
   }
 
-  void enviar(){
-    print("Enviar");
+  Future<void> enviar() async{
+    raiseLoadingModal();
+    assert(initialTimeOfDay != null);
+    var ticket = Ticket();
+    ticket.dateTime = initialDate;
+    ticket.horaInicio = initialTimeOfDay.hour;
+    ticket.direccion = location;
+    final res = await _service.post(ticket);
+    assert(res == true);
+    Navigator.pop(context);
+    //Navigator.pop(context);
   }
 
   Future<DateTime> openDataPicker() async{
@@ -149,7 +168,7 @@ class _NewTicketFormState extends State<NewTicketForm> {
     final result = await openHourPicker();
     if(result != null){
       setState((){
-        timeOfDay = result;
+        timeOfDay.replacing(hour: result.hour, minute: result.minute);
         controller.value = controller.value.copyWith(text: timeOfDay.hour.toString() + ":" + timeOfDay.minute.toString());
       });
     }
@@ -224,6 +243,7 @@ class _NewTicketFormState extends State<NewTicketForm> {
       loc.longitud = 0;
       loc.direccion = "placeholder";
     }
+    location = loc;
     Navigator.pop(context);
     directionTextController.value = directionTextController.value.copyWith(text: loc.direccion);
   }

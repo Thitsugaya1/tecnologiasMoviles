@@ -9,24 +9,35 @@ abstract class TicketStatus{
 
 class Ticket{ 
   int id;
-  DateTime datetime;
+  DateTime dateTime;
   String user;
-  double horaInicio;
+  int horaInicio;
   double horaTermino;
   int estado;
-  String comentario;
+  String comentario = '';
   GPSLocation direccion;
 
   Ticket();
 
   Ticket.fromJson(Map<String, dynamic> json) :
     id = json['id'],
-    datetime = json['datetime'],
+    dateTime = json['dateTime'],
     user = json['user'],
     horaInicio = json['horaInicio'],
     horaTermino = json['horaTermino'],
     estado = json['estado'],
     comentario = json['comentario'],
     direccion = GPSLocation.fromJson(json['Direccion']);
+
+  Map<String, dynamic> toJson() => {
+    'id' : id,
+    'dateTime' : dateTime.toString(),
+    'user' : user,
+    'horaInicio' : horaInicio,
+    'horaTermino' : horaTermino,
+    'estado' : estado,
+    'comentario' :  comentario,
+    'direccion' : direccion.toJson()
+  };
 
 }
