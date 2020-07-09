@@ -3,6 +3,7 @@ import 'package:ticketapp/data/Models.dart';
 import 'package:ticketapp/data/httpService.dart';
 import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/data/userService.dart';
+import 'package:ticketapp/ui/admin/adminPage.dart';
 import 'package:ticketapp/ui/user/NewTicketForm.dart';
 import 'package:ticketapp/ui/login.dart';
 import 'package:ticketapp/ui/notImplementedPage.dart';
@@ -21,6 +22,8 @@ class RouteGenerator {
         return guestRoutes(settings);
       case UserRol.Client:
         return clientRoutes(settings);
+      case UserRol.Admin:
+        return adminRoutes(settings);
       default: 
         return MaterialPageRoute(builder: (_) => NotImplementedPage());
     }
@@ -42,7 +45,12 @@ class RouteGenerator {
   }
 
   Route<dynamic> adminRoutes(RouteSettings settings){
-    return MaterialPageRoute(builder: (_) => NotImplementedPage());
+    switch(settings.name){
+      case '/':
+        return MaterialPageRoute(builder: (_) => AdminMainpage());
+      default:
+        return notImplemented();
+    }
   }
 
   Route<dynamic> notImplemented(){
