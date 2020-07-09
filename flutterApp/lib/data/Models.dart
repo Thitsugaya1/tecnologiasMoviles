@@ -28,7 +28,7 @@ class TokenMessage {
 class User {
 	String username;
 	String email;
-	int rol;
+	int rol = UserRol.Guest;
 
 	User(String username, String email, int rol){
 		this.username = username;
