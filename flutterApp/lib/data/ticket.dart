@@ -19,6 +19,8 @@ class Ticket{
 
   Ticket();
 
+  Ticket.half(this.id, this.dateTime, this.user, this.direccion);
+
   Ticket.fromJson(Map<String, dynamic> json) :
     id = json['id'],
     dateTime = json['dateTime'],
