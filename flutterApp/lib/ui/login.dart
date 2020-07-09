@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:ticketapp/Models.dart';
+import 'package:ticketapp/data/Models.dart';
 import 'package:ticketapp/data/userService.dart';
+import 'package:ticketapp/ui/Utilities.dart';
 
 class Login extends StatelessWidget {
   final UserService _userService;
@@ -74,19 +75,7 @@ class Login extends StatelessWidget {
   }
 
   AlertDialog loadingDialog(BuildContext context){
-    return AlertDialog(
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Image(
-              image: AssetImage('assets/loader.gif'),
-              width: 150,
-              height: 150,
-              )
-          ],
-          )
-      )
-    );
+    return Utilities.loadingAlert();
   }
 
   Future<void> errorAlert(BuildContext context) async {

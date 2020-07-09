@@ -1,9 +1,7 @@
-import 'package:ticketapp/Models.dart';
+import 'package:ticketapp/data/Models.dart';
 import 'package:ticketapp/data/httpService.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
-
-import '../Models.dart';
 
 class UserService {
   User loggedUser;
