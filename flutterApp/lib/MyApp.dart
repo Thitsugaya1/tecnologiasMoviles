@@ -12,8 +12,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'TicketApp',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.cyan,
+        primaryColor: Colors.cyan[800]
       ),
+      darkTheme: ThemeData.dark(),
       initialRoute: '/',
       onGenerateRoute: _routeGenerator.generateRoute,
     );
