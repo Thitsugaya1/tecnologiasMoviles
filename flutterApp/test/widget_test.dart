@@ -7,7 +7,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:ticketapp/Models.dart';
+import 'package:ticketapp/data/Models.dart';
 
 void main() {
 
