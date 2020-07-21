@@ -57,7 +57,7 @@ class _NewTicketFormState extends State<NewTicketForm> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text('Descripcion'),
-          TextFormField(
+          /* TextFormField(
             decoration: InputDecoration(
                 icon: Icon(Icons.person),
                 hintText: "Email",
@@ -79,7 +79,7 @@ class _NewTicketFormState extends State<NewTicketForm> {
               hintText: "Apellido",
               labelText: "Apellido"
             )
-          ),
+          ), */
           Text('Direccion'),
           TextFormField(
             decoration: InputDecoration( 
@@ -97,13 +97,13 @@ class _NewTicketFormState extends State<NewTicketForm> {
            initialTimeOfDay,
            "Desde",
            "Desde"),
-          seleccionDateTimeDesde(
+         /*  seleccionDateTimeDesde(
             endDateController, 
             endDate, 
             endTimeOfDayController, 
             endTimeOfDay,
             "Hasta",
-            "Hasta"),
+            "Hasta"), */
           ButtonBar(
             children: <Widget>[
               FlatButton(
@@ -147,6 +147,7 @@ class _NewTicketFormState extends State<NewTicketForm> {
     final res = await _service.post(ticket);
     assert(res == true);
     Navigator.pop(context);
+    raiseSuccessModal();
     //Navigator.pop(context);
   }
 
@@ -168,7 +169,7 @@ class _NewTicketFormState extends State<NewTicketForm> {
     final result = await openHourPicker();
     if(result != null){
       setState((){
-        timeOfDay.replacing(hour: result.hour, minute: result.minute);
+        timeOfDay = timeOfDay.replacing(hour: result.hour, minute: result.minute);
         controller.value = controller.value.copyWith(text: timeOfDay.hour.toString() + ":" + timeOfDay.minute.toString());
       });
     }
@@ -223,6 +224,17 @@ class _NewTicketFormState extends State<NewTicketForm> {
         return Utilities.loadingAlert();
       }  
       );
+  }
+
+  void raiseSuccessModal(){
+    showDialog(
+      context: context,
+      builder: (context) => Utilities.successAlert(() {
+        Navigator.pop(context); 
+        Navigator.pop(context);
+        }),
+      barrierDismissible: false,
+    );
   }
 
   
