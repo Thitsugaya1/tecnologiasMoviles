@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ticketapp/ui/common/TicketList.dart';
 
 
 class UserMainPage extends StatefulWidget {
@@ -29,19 +30,7 @@ class _UserMainPageState extends State<UserMainPage> {
 
 
   Widget _body(){
-    return Center(
-      child: Column(
-        children: [
-          Text('Body'),
-          RaisedButton(
-            child: Text('Move'),
-            onPressed: () { 
-              Navigator.pushReplacementNamed(context, '/login');
-            },
-          ),
-        ]
-      )
-      );
+    return TicketList();
   }
 
   Widget _drawer(){
