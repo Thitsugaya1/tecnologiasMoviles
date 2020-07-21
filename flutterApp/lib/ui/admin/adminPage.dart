@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ticketapp/ui/admin/adminTicketList.dart';
+import 'package:ticketapp/ui/common/TicketList.dart';
 
 class AdminMainpage extends StatefulWidget {
   AdminMainpage({Key key}) : super(key: key);
@@ -28,7 +28,7 @@ class _AdminMainpageState extends State<AdminMainpage> {
         ],
       ),
       body: Center(
-        child: AdminTicketList(),
+        child: TicketList(),
       ),
     );
   }
