@@ -20,4 +20,10 @@ class GPSLocation{
     'direccion' : direccion,
     'id' : id
   };
+
+  Map<String, dynamic> toJsonStub() => {
+    'latitud' : latitud,
+    'longitud' : longitud,
+    'direccion' : direccion
+  };
 }
