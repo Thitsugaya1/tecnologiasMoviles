@@ -33,13 +33,20 @@ class Ticket{
 
   Map<String, dynamic> toJson() => {
     'id' : id,
-    'dateTime' : dateTime.toString(),
+    'dateTime' : dateTime.toIso8601String(),
     'user' : user,
     'horaInicio' : horaInicio,
     'horaTermino' : horaTermino,
     'estado' : estado,
     'comentario' :  comentario,
     'direccion' : direccion.toJson()
+  };
+
+  Map<String, dynamic> toJsonStub() => {
+    'dateTime' : dateTime.toIso8601String(),
+    'horaInicio' : horaInicio,
+    'comentario' : comentario,
+    'direccion' : direccion.toJsonStub()
   };
 
 }
