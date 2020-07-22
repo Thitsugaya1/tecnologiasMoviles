@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/ui/common/TicketList.dart';
 
 class UserTicketsPage extends StatelessWidget {
-  const UserTicketsPage({Key key}) : super(key: key);
+  final TicketService _ticketService;
+  const UserTicketsPage(this._ticketService, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +13,7 @@ class UserTicketsPage extends StatelessWidget {
         title: Text('User Tickets'),
       ),
       body: SingleChildScrollView(
-        child: TicketList(),
+        child: TicketList(_ticketService),
       ),
     );
   }

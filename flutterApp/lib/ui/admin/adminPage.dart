@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/ui/common/TicketList.dart';
 
 class AdminMainpage extends StatefulWidget {
-  AdminMainpage({Key key}) : super(key: key);
+  TicketService _ticketService;
+  AdminMainpage(this._ticketService, {Key key}) : super(key: key);
 
   @override
   _AdminMainpageState createState() => _AdminMainpageState();
@@ -28,7 +30,7 @@ class _AdminMainpageState extends State<AdminMainpage> {
         ],
       ),
       body: Center(
-        child: TicketList(),
+        child: TicketList(this.widget._ticketService),
       ),
     );
   }
