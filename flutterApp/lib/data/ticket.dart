@@ -23,13 +23,13 @@ class Ticket{
 
   Ticket.fromJson(Map<String, dynamic> json) :
     id = json['id'],
-    dateTime = json['dateTime'],
+    dateTime = DateTime.parse(json['dateTime']),
     user = json['user'],
     horaInicio = json['horaInicio'],
     horaTermino = json['horaTermino'],
     estado = json['estado'],
     comentario = json['comentario'],
-    direccion = GPSLocation.fromJson(json['Direccion']);
+    direccion = (json['Direccion'] != null) ? GPSLocation.fromJson(json['Direccion']) : null;
 
   Map<String, dynamic> toJson() => {
     'id' : id,

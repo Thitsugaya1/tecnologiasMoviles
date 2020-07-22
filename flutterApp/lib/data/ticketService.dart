@@ -16,7 +16,14 @@ class TicketService {
   }
 
   Future<List<Ticket>> getAll() async{
-    return Future.error('Not Implemented');
+    var response = await http.get(HttpService.BaseURL + TicketService.Apartado, headers: _httpService.getHeaders());
+    assert(response.statusCode == 200);
+    List payload = convert.jsonDecode(response.body);
+    List<Ticket> tickets = List<Ticket>();
+    payload.forEach((element) {
+      tickets.add(Ticket.fromJson(element));
+    });
+    return Future.value(tickets);
   }
 
 
