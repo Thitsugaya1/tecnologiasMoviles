@@ -44,7 +44,9 @@ namespace TecnologiasMovilesApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
+            ApplicationDbContext context, UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -61,6 +63,8 @@ namespace TecnologiasMovilesApi
             app.UseAuthorization();
             app.UseSwaggerDocumentation();
             context.Database.EnsureCreated();
+            DbSeeder.SeedRoles(roleManager);
+            if (env.IsDevelopment()) DbSeeder.Seedusers(userManager);
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
