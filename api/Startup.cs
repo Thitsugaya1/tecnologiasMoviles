@@ -43,11 +43,13 @@ namespace TecnologiasMovilesApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ApplicationDbContext context, UserManager<User> userManager)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                context.Database.EnsureCreated();
+                DbSeeder.Seedusers(userManager);
             }
             app.UseCors(x => x
                 .AllowAnyOrigin()
