@@ -17,6 +17,6 @@ namespace TecnologiasMovilesApi.Services
         Task<IEnumerable<IdentityUser>> GetAllUsers();
         Task<IEnumerable<string>> GetAllUserMail();
         Task<ResponseViewModel> AddRol(string mail, UserRol rol);
-        
+        Task<ResponseViewModel> Update(IdentityUser user);
     }
 }

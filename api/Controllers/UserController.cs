@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TecnologiasMovilesApi.Services;
+using TecnologiasMovilesApi.Services.DataBase;
 using TecnologiasMovilesApi.ViewModels;
 
 namespace TecnologiasMovilesApi.Controllers
@@ -16,8 +18,13 @@ namespace TecnologiasMovilesApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IUnitOfWork _context;
 
-        public UserController(IUserService userService) => _userService = userService;
+        public UserController(IUserService userService, IUnitOfWork unitOfWork)
+        {
+            _userService = userService;
+            _context = unitOfWork;
+        }
 
         //ActionResult<UserViewModel>
         [Authorize]
@@ -25,11 +32,13 @@ namespace TecnologiasMovilesApi.Controllers
         public ActionResult<UserViewModel> GetUser() 
             =>Ok(Mapper.Map<UserViewModel>(_userService.GetUserByMail(User.Identity.Name).Result));
 
-        //[Authorize]
-        [HttpPut]
-        public ActionResult<UserViewModel> UpdateUser()
+        [Authorize] [HttpPut]
+        public ActionResult<ResponseViewModel> UpdateUser(UserViewModel userPoco)
         {
-            throw new  NotImplementedException();
+            var user = _userService.GetUserByMail(User.Identity.Name).Result;
+            Mapper.Map(userPoco, user);
+            var result = _userService.Update(user).Result;
+            return result.Success ? (ActionResult<ResponseViewModel>) Ok(result) : BadRequest(result);
         }
         
         //[Authorize(Roles = "Administrador")]
