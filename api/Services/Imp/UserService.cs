@@ -102,11 +102,21 @@ namespace TecnologiasMovilesApi.Services.Imp
         public async Task<IEnumerable<string>> GetAllUserMail()
             => await _userManger.Users.Select(x => x.Email).ToListAsync();
         public async Task<ResponseViewModel> AddRol(string mail, UserRol rol)
-        {
+        {   
+            //for N roles
             var user = await _userManger.FindByEmailAsync(mail);
             var result = await _userManger.AddToRoleAsync(user, rol.GetDisplayName());
             return result.Succeeded
                 ? new ResponseViewModel($"{rol.GetDisplayName()} added", true)
+                : new ResponseViewModel("Something went wrong", false,
+                    result.Errors.Select(e => e.Description));
+        }
+
+        public async Task<ResponseViewModel> Update(IdentityUser user)
+        {
+            var result = await _userManger.UpdateAsync(user);
+            return result.Succeeded
+                ? new ResponseViewModel($"{user.Email} update", true)
                 : new ResponseViewModel("Something went wrong", false,
                     result.Errors.Select(e => e.Description));
         }
