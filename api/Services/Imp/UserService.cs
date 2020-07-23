@@ -45,7 +45,7 @@ namespace TecnologiasMovilesApi.Services.Imp
                 UserName = model.UserName,
             };
             var result = await _userManger.CreateAsync(user, model.Password);
-            //await _userManger.AddToRoleAsync(user, UserRol.Cliente.GetDisplayName());
+            await _userManger.AddToRoleAsync(user, UserRol.Cliente.ToString("G"));
             return result.Succeeded
                 ? await _mailService.SendConfirmationEmailAsync(user.Email,
                     await _userManger.GenerateEmailConfirmationTokenAsync(user))
