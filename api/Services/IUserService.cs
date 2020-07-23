@@ -13,10 +13,10 @@ namespace TecnologiasMovilesApi.Services
         Task<ResponseViewModel> ConfirmEmailAsync(string email, string token);
         Task<ResponseViewModel> ForgetPasswordAsync(string email);
         Task<ResponseViewModel> ResetPasswordAsync(RegisterViewModel model, string token);
-        Task<IdentityUser> GetUserByMail(string mail);
-        Task<IEnumerable<IdentityUser>> GetAllUsers();
+        Task<User> GetUserByMail(string mail);
+        Task<IEnumerable<User>> GetAllUsers();
         Task<IEnumerable<string>> GetAllUserMail();
         Task<ResponseViewModel> AddRol(string mail, UserRol rol);
-        Task<ResponseViewModel> Update(IdentityUser user);
+        Task<ResponseViewModel> Update(User user);
     }
 }

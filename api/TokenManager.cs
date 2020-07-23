@@ -19,7 +19,7 @@ namespace TecnologiasMovilesApi
 
         public static IServiceCollection AddAuthenticationConfiguration(this IServiceCollection services, string secret)
         {
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
             
@@ -51,7 +51,7 @@ namespace TecnologiasMovilesApi
             return services;
         }
 
-        public static TokenViewModel GenerateToken(this string email, string secret)
+        public static TokenViewModel GenerateToken(this string email, string secret, string rol)
         {
             
             byte[] key = Convert.FromBase64String(secret);
@@ -61,7 +61,7 @@ namespace TecnologiasMovilesApi
                 Subject = new ClaimsIdentity( new []
                 {
                     new Claim(ClaimTypes.Name, email),
-                    //new Claim(ClaimTypes.Role, UserRol.Administrador.GetDisplayName())
+                    new Claim(ClaimTypes.Role, rol)
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(securityKey,

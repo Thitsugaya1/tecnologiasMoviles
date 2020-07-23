@@ -14,14 +14,13 @@ namespace TecnologiasMovilesApi.Services.Imp
 {
     public class UserService : IUserService
     {
-        private readonly UserManager<IdentityUser> _userManger;
+        private readonly UserManager<User> _userManger;
         private readonly IMailService _mailService;
         private readonly IConfiguration _configuration;
-        private RoleManager<IdentityRole> _roleManager;
 
-        public UserService(UserManager<IdentityUser> userManager, IMailService mailService, IConfiguration configuration, RoleManager<IdentityRole> role)
+        public UserService(UserManager<User> userManager, IMailService mailService, IConfiguration configuration)
         {
-            _roleManager = role;
+            //_roleManager = role;
             _userManger = userManager;
             _mailService = mailService;
             _configuration = configuration;
@@ -39,7 +38,7 @@ namespace TecnologiasMovilesApi.Services.Imp
             if (model == null) throw new NullReferenceException("Register Model is null");
             if (model.Password != model.ConfirmPassword)
                 return new ResponseViewModel("Confirm password doesn't match the password", false);
-            var user = new IdentityUser
+            var user = new User()
             {
                 Email = model.Email,
                 UserName = model.UserName,
@@ -60,7 +59,7 @@ namespace TecnologiasMovilesApi.Services.Imp
             if (user == null) return new ResponseViewModel("There is no user with that Email address", false);
             var result = await _userManger.CheckPasswordAsync(user, model.Password);
             return result? 
-                new ResponseViewModel(user.Email.GenerateToken(_configuration["Jwt:Key"]), true):
+                new ResponseViewModel(user.Email.GenerateToken(_configuration["Jwt:Key"], user.Rol), true):
                 new ResponseViewModel("Invalid password", false);
         }
 
@@ -96,23 +95,26 @@ namespace TecnologiasMovilesApi.Services.Imp
                 : new ResponseViewModel("Something went wrong", false,
                     result.Errors.Select(e => e.Description));
         }
-        public Task<IdentityUser> GetUserByMail(string mail) => _userManger.FindByEmailAsync(mail);
-        public async Task<IEnumerable<IdentityUser>> GetAllUsers() => await _userManger.Users.ToListAsync();
+        public Task<User> GetUserByMail(string mail) => _userManger.FindByEmailAsync(mail);
+        public async Task<IEnumerable<User>> GetAllUsers() => await _userManger.Users.ToListAsync();
 
         public async Task<IEnumerable<string>> GetAllUserMail()
             => await _userManger.Users.Select(x => x.Email).ToListAsync();
         public async Task<ResponseViewModel> AddRol(string mail, UserRol rol)
         {   
             //for N roles
+            
             var user = await _userManger.FindByEmailAsync(mail);
-            var result = await _userManger.AddToRoleAsync(user, rol.GetDisplayName());
+            user.Rol = rol.GetDisplayName();
+            var result = await _userManger.UpdateAsync(user);
+            //var result = await _userManger.AddToRoleAsync(user, rol.GetDisplayName());
             return result.Succeeded
                 ? new ResponseViewModel($"{rol.GetDisplayName()} added", true)
                 : new ResponseViewModel("Something went wrong", false,
                     result.Errors.Select(e => e.Description));
         }
 
-        public async Task<ResponseViewModel> Update(IdentityUser user)
+        public async Task<ResponseViewModel> Update(User user)
         {
             var result = await _userManger.UpdateAsync(user);
             return result.Succeeded
