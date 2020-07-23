@@ -5,6 +5,11 @@ abstract class UserRol{
 	static const int Employee = 2;
 	static const int Client = 3;
 	static const int Guest = 99;
+
+  static Map<String, int> map = {
+    "Administrador" : UserRol.Admin,
+    "Cliente" : UserRol.Client
+  };
 }
 
 class TokenMessage {
@@ -39,7 +44,7 @@ class User {
   User.fromJson(Map<String, dynamic> json):
     username = json['username'], 
     email = json['email'],
-    rol = json['rol'];
+    rol = UserRol.map[json['rol']];
 
   Map<String, dynamic> toJson() => {
     'username': username,

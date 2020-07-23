@@ -6,7 +6,7 @@ import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/ui/Utilities.dart';
 
 class NewTicketForm extends StatefulWidget {
-  TicketService _service;
+  final TicketService _service;
 
   NewTicketForm(this._service);
 

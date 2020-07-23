@@ -32,7 +32,7 @@ class RouteGenerator {
   Route<dynamic> clientRoutes(RouteSettings settings){
     switch(settings.name){
       case '/':
-        return MaterialPageRoute(builder: (_) => UserMainPage(_ticketService) );
+        return MaterialPageRoute(builder: (_) => UserMainPage(_ticketService, _userService) );
       case '/tickets/new':
         return MaterialPageRoute(builder: (_) => NewTicketForm(_ticketService));
       default:
@@ -47,7 +47,7 @@ class RouteGenerator {
   Route<dynamic> adminRoutes(RouteSettings settings){
     switch(settings.name){
       case '/':
-        return MaterialPageRoute(builder: (_) => AdminMainpage(_ticketService));
+        return MaterialPageRoute(builder: (_) => AdminMainpage(_ticketService,  _userService));
       default:
         return notImplemented();
     }
