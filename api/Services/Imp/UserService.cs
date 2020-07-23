@@ -59,8 +59,9 @@ namespace TecnologiasMovilesApi.Services.Imp
             var user = await _userManger.FindByEmailAsync(model.Email);
             if (user == null) return new ResponseViewModel("There is no user with that Email address", false);
             var result = await _userManger.CheckPasswordAsync(user, model.Password);
+            var role = (await _userManger.GetRolesAsync(user))[0];
             return result? 
-                new ResponseViewModel(user.Email.GenerateToken(_configuration["Jwt:Key"]), true):
+                new ResponseViewModel(user.Email.GenerateToken(_configuration["Jwt:Key"], role), true):
                 new ResponseViewModel("Invalid password", false);
         }
 
@@ -119,6 +120,12 @@ namespace TecnologiasMovilesApi.Services.Imp
                 ? new ResponseViewModel($"{user.Email} update", true)
                 : new ResponseViewModel("Something went wrong", false,
                     result.Errors.Select(e => e.Description));
+        }
+
+        public async Task<UserViewModel> GetProfile(IdentityUser user)
+        {
+            var result = await _userManger.GetRolesAsync(user);
+            return new UserViewModel{Email = user.Email, UserName = user.UserName, Rol = result[0]}; 
         }
     }
 }

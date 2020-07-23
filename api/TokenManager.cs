@@ -51,7 +51,7 @@ namespace TecnologiasMovilesApi
             return services;
         }
 
-        public static TokenViewModel GenerateToken(this string email, string secret)
+        public static TokenViewModel GenerateToken(this string email, string secret, string role)
         {
             
             byte[] key = Convert.FromBase64String(secret);
@@ -61,6 +61,7 @@ namespace TecnologiasMovilesApi
                 Subject = new ClaimsIdentity( new []
                 {
                     new Claim(ClaimTypes.Name, email),
+                    new Claim(ClaimTypes.Role, role)
                     //new Claim(ClaimTypes.Role, UserRol.Administrador.GetDisplayName())
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),

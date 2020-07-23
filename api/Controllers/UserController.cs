@@ -29,8 +29,9 @@ namespace TecnologiasMovilesApi.Controllers
         //ActionResult<UserViewModel>
         [Authorize]
         [HttpGet]
-        public ActionResult<UserViewModel> GetUser() 
-            =>Ok(Mapper.Map<UserViewModel>(_userService.GetUserByMail(User.Identity.Name).Result));
+        public ActionResult<UserViewModel> GetUser() {
+            return Ok(_userService.GetProfile(_userService.GetUserByMail(User.Identity.Name).Result).Result);
+        }
 
         [Authorize] [HttpPut]
         public ActionResult<ResponseViewModel> UpdateUser(UserViewModel userPoco)
@@ -41,7 +42,7 @@ namespace TecnologiasMovilesApi.Controllers
             return result.Success ? (ActionResult<ResponseViewModel>) Ok(result) : BadRequest(result);
         }
         
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpGet("All")]
         public ActionResult<IEnumerable<UserViewModel>> GetAllUser()
             =>Ok(Mapper.Map<IEnumerable<UserViewModel>>(_userService.GetAllUsers().Result));
