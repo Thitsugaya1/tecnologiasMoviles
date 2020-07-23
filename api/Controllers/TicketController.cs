@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TecnologiasMovilesApi.Models;
 using TecnologiasMovilesApi.Services.DataBase;
+using TecnologiasMovilesApi.Services;
+using System;
+using TecnologiasMovilesApi.ViewModels;
 
 namespace TecnologiasMovilesApi.Controllers
 {
@@ -13,18 +16,25 @@ namespace TecnologiasMovilesApi.Controllers
     public class TicketController: ControllerBase
     {
         private readonly IUnitOfWork _context;
-        public TicketController(IUnitOfWork unitOfWork) => _context = unitOfWork;
+		private readonly IUserService _userService;
+		private readonly ITicketService _ticketService;
+        public TicketController(IUnitOfWork unitOfWork, IUserService userService, ITicketService ticketService) { 
+			_context = unitOfWork;
+			_userService = userService;	
+			_ticketService = ticketService;
+		}
         
         [Authorize][HttpPost]
-        public IActionResult CreateTicket(Ticket ticket)
+        public IActionResult CreateTicket(CreateTicketStub stub)
         {
-            ticket.ClienteEmail = User.Identity.Name;
-            _context.Tickets.Add(ticket);
-            return Ok(_context.SaveChanges());
+            return Ok(_ticketService.CreateTicketByUser(stub, User.Identity.Name).Result);
         }
 
         [HttpGet]
-        public IEnumerable<Ticket> GetAll() => _context.Tickets.GetAll();
+        public IEnumerable<Ticket> GetAll() {
+			return _ticketService.GetAllTickets().Result;
+		}
+
        
         [HttpGet("{id}")]
         public ActionResult<Ticket> Get(int id) => Ok(_context.Tickets[id]);
@@ -47,5 +57,8 @@ namespace TecnologiasMovilesApi.Controllers
             _context.SaveChanges();
             return Ok();
         }
+        
+
+		
     }
 }
