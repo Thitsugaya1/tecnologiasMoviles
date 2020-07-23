@@ -123,7 +123,7 @@ class Login extends StatelessWidget {
       passwordTextController.value.text).then(  
         (value) {
           _userService.getAuthUser().then( (usr)  {
-            assert(usr.rol != UserRol.Guest);
+            assert(usr.rol != null);
             _userService.changeUser(usr);
             Navigator.pop(context);
             Navigator.popAndPushNamed(context, '/');

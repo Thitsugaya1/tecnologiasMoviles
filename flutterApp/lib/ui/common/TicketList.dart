@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:ticketapp/data/gpsLocation.dart';
 import 'package:ticketapp/data/ticket.dart';
 import 'package:ticketapp/data/ticketService.dart';
+import 'package:ticketapp/data/userService.dart';
 import 'package:ticketapp/ui/common/detalleTicket.dart';
 import 'package:ticketapp/ui/common/ticketListBlock.dart';
 
 
 class TicketList extends StatefulWidget {
-  TicketService _service;
-  TicketList(this._service, {Key key}) : super(key: key);
+  final TicketService _service;
+  final UserService _userService;
+  TicketList(this._service, this._userService, {Key key}) : super(key: key);
 
   @override
   _TicketListState createState() => _TicketListState();
+
 }
 
 class _TicketListState extends State<TicketList> {
@@ -22,12 +25,16 @@ class _TicketListState extends State<TicketList> {
 
   @override
   void initState() {
+    getTickets();
+    super.initState();
+  }
+
+  void getTickets(){
     this.widget._service.getAll().then((value) {
         setState(() {
           tickets = value;
         });
     });
-    super.initState();
   }
 
   @override
@@ -53,7 +60,7 @@ class _TicketListState extends State<TicketList> {
       child: TicketListBlock(t),
       onTap: () {
         print(t.id.toString());
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TicketPage(t)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TicketPage(t, widget._userService, widget._service)));
       },
     );
   }

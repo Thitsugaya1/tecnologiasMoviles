@@ -8,9 +8,21 @@ class TicketListBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color color;
+    switch (_ticket.estado) {
+      case TicketStatus.Aceptado:
+        color = Colors.green;
+        break;
+      case TicketStatus.Cancelado:
+        color = Colors.grey;
+        break;
+      default:
+    }
+
     return Container(
         height: 70,
         decoration: BoxDecoration(
+          color: color,
           border: Border.all()
         ),
         child: Center(

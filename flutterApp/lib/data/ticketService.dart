@@ -15,6 +15,16 @@ class TicketService {
     return Future.error('NotImplemented');
   }
 
+  Future<bool> resolverTicket(int id, int estado) async{
+    var params = { 'estado' : estado.toString() };
+    var response = await http.post(
+      HttpService.BaseURL + Apartado + '/$id/estado?estado=$estado', 
+      headers: _httpService.getHeaders());
+    assert(response.statusCode == 200);
+    //TODO: Resolve errors.
+    return Future.value(true);
+  }
+
   Future<List<Ticket>> getAll() async{
     var response = await http.get(HttpService.BaseURL + TicketService.Apartado, headers: _httpService.getHeaders());
     assert(response.statusCode == 200);

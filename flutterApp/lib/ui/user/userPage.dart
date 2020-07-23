@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ticketapp/data/ticketService.dart';
+import 'package:ticketapp/data/userService.dart';
 import 'package:ticketapp/ui/common/TicketList.dart';
 
 
 class UserMainPage extends StatefulWidget {
-  TicketService _ticketService;
-
-  UserMainPage(this._ticketService, {Key key}) : super(key: key);
+  final TicketService _ticketService;
+  final UserService _userService;
+  UserMainPage(this._ticketService, this._userService, {Key key}) : super(key: key);
 
   @override
   _UserMainPageState createState() => _UserMainPageState();
@@ -35,7 +36,7 @@ class _UserMainPageState extends State<UserMainPage> {
 
 
   Widget _body(){
-    return TicketList(widget._ticketService);
+    return TicketList(widget._ticketService, widget._userService);
   }
 
   Widget _drawer(){
