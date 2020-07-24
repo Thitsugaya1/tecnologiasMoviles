@@ -16,6 +16,11 @@ class ProfilePage extends StatelessWidget {
 }
 
 class ProfileWidget extends StatefulWidget {
+  final Map<String, String> dummy = 
+  {'Image': "https://thispersondoesnotexist.com/image", 
+  'Username': "Username", 
+  "Tickets": "8"};
+
   ProfileWidget({Key key}) : super(key: key);
 
   @override
@@ -53,6 +58,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               hintText: "Username",
               labelText: "Nombre"
             ),
+            initialValue: widget.dummy['Username'],
           )
         ),
         IconButton(icon: Icon(Icons.edit), onPressed: (){})
@@ -70,19 +76,19 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.red,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(widget.dummy['Image'])
+              )
             ),
             alignment: Alignment.center,
-            child:  Icon(
-              Icons.person_pin,
-              size: 300,
-              )
           ),
           Align(
             alignment: Alignment(0.9, 0.9),            
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(width: 3),
+                border: Border.all(width: 5),
               ),
               child: IconButton(
                 icon: Icon(Icons.edit),
@@ -103,7 +109,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               icon: Icon(Icons.info),
               hintText: "8",
               labelText: "Tickets Realizados"
-            )
+            ),
+            initialValue: widget.dummy["Tickets"],
           )
         )
       ]
