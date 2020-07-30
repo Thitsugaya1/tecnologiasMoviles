@@ -10,7 +10,7 @@ namespace TecnologiasMovilesApi.Services.DataBase
     {
         //public Repository<User, string> Users { get; set; }
         //public Repository<Profile, string> Profiles { get; set; }
-        public IRepository<Ticket,int> Tickets { get; set; }
+        public TicketRepository Tickets { get; set; }
         public IRepository<UbicacionGPS,int> UbicacionGPS { get; set; }
         public IRepository<IdentityUser, Guid> Users { get; set; }
 

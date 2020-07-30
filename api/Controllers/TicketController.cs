@@ -17,23 +17,27 @@ namespace TecnologiasMovilesApi.Controllers
     {
         private readonly IUnitOfWork _context;
 		private readonly IUserService _userService;
-		private readonly ITicketService _ticketService;
-        public TicketController(IUnitOfWork unitOfWork, IUserService userService, ITicketService ticketService) { 
+		//private readonly ITicketService _ticketService;
+        public TicketController(IUnitOfWork unitOfWork, IUserService userService) { 
 			_context = unitOfWork;
 			_userService = userService;	
-			_ticketService = ticketService;
+			//_ticketService = ticketService;
 		}
-        
-        [Authorize][HttpPost]
-        public IActionResult CreateTicket(CreateTicketStub stub)
+
+        [Authorize] [HttpPost]
+        public IActionResult CreateTicket(Ticket ticket)
         {
-            return Ok(_ticketService.CreateTicketByUser(stub, User.Identity.Name).Result);
+	        ticket.ClienteEmail = User.Identity.Name;
+	        _context.Tickets.Add(ticket);
+	        return Ok(_context.SaveChanges());
         }
 
+
         [HttpGet]
-        public IEnumerable<Ticket> GetAll() {
-			return _ticketService.GetAllTickets().Result;
-		}
+        public IEnumerable<Ticket> GetAll()
+        {
+	        return _context.Tickets.GetAll();
+        }
 
        
         [HttpGet("{id}")]
@@ -57,6 +61,23 @@ namespace TecnologiasMovilesApi.Controllers
             _context.SaveChanges();
             return Ok();
         }
+
+        [HttpPost("{id}/Images")]
+        public IActionResult AddImages(int id, IEnumerable<Image> images)
+        {
+	        _context.Tickets.AddImages(id, images);
+	        _context.SaveChanges();
+	        return Ok();
+        }
+        
+        [HttpPost("{id}/Audio")]
+        public IActionResult AddAudios(int id, IEnumerable<Audio> audios)
+        {
+	        _context.Tickets.AddAudios(id, audios);
+	        _context.SaveChanges();
+	        return Ok();
+        }
+        
         
 
 		

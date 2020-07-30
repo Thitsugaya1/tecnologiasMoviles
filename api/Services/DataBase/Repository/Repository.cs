@@ -11,13 +11,13 @@ namespace TecnologiasMovilesApi.Services.DataBase.Repository
         protected readonly ApplicationDbContext Context;
         public Repository(ApplicationDbContext context) => Context = context;
 
-        public TEntity this[TKey index]
+        public virtual TEntity this[TKey index]
         {
             get => Get(index);
             set => Update(value); 
         }
-        public TEntity Get(TKey key) => Context.Set<TEntity>().Find(key);
-        public IEnumerable<TEntity> GetAll() => Context.Set<TEntity>();
+        public virtual TEntity Get(TKey key) => Context.Set<TEntity>().Find(key);
+        public virtual IEnumerable<TEntity> GetAll() => Context.Set<TEntity>();
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate) 
             =>Context.Set<TEntity>().Where(predicate);
         public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)

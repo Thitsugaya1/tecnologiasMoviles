@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
@@ -24,6 +25,8 @@ namespace TecnologiasMovilesApi.Models
         [ForeignKey("UbicacionGPS")]
         public int DireccionId { get; set; }
         public UbicacionGPS Direccion { get; set; }
+        public List<Image> Images { get; set; } = new List<Image>();
+        public List<Audio> Audios { get; set; } = new List<Audio>();
         
     }
 }

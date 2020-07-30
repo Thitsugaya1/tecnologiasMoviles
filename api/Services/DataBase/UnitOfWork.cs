@@ -11,7 +11,7 @@ namespace TecnologiasMovilesApi.Services.DataBase
         
         private readonly ApplicationDbContext _context;
         
-        public IRepository<Ticket, int> Tickets { get; set; }
+        public TicketRepository Tickets { get; set; }
         public IRepository<UbicacionGPS, int> UbicacionGPS { get; set; }
         public IRepository<IdentityUser, Guid> Users { get; set; }
         
@@ -19,7 +19,7 @@ namespace TecnologiasMovilesApi.Services.DataBase
         {
             _context = context;
             Users = new Repository<IdentityUser, Guid>(_context);
-            Tickets = new Repository<Ticket, int>(_context);
+            Tickets = new TicketRepository (_context);
             UbicacionGPS = new Repository<UbicacionGPS, int>(_context);
         }
         //public Repository<User, string> Users { get; set; }

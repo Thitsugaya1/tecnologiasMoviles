@@ -37,8 +37,8 @@ namespace TecnologiasMovilesApi
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUnitOfWork,UnitOfWork>();
-            services.AddScoped<ITicketService, TicketService>();
+            //services.AddScoped<IUnitOfWork,UnitOfWork>();
+            //services.AddScoped<ITicketService, TicketService>();
             services.AddSwaggerDocumentation(); //Swagger
             services.AddControllers();
         }
