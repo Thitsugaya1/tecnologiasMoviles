@@ -13,6 +13,7 @@ namespace TecnologiasMovilesApi
                 .ForMember(o => o.Email , p => p.MapFrom(d => d.Email))
                 .ForMember(o => o.UserName , p => p.MapFrom(d => d.UserName))
                 .ForMember(o => o.Rol, p => p.MapFrom(d => d.Rol))
+                .ForMember(o => o.Avatar, p => p.MapFrom(d => d.Avatar))
                 .ForAllOtherMembers(o=>o.Ignore());
             ;
             CreateMap<UserViewModel, IdentityUser>()
