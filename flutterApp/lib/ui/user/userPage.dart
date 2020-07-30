@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/data/userService.dart';
 import 'package:ticketapp/ui/common/TicketList.dart';
+import 'package:ticketapp/ui/common/drawer.dart';
 
 
 class UserMainPage extends StatefulWidget {
@@ -40,9 +41,7 @@ class _UserMainPageState extends State<UserMainPage> {
   }
 
   Widget _drawer(){
-    return Container(
-      child: Text('Drawer')
-    );
+    return MenuDrawer(widget._userService);
   }
 
 }

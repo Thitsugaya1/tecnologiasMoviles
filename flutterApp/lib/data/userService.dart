@@ -71,4 +71,9 @@ class UserService {
     this.loggedUser = newuser;
   }
 
+  void logout(){
+    this.loggedUser = null;
+    _http.removeAuthToken();
+  }
+
 }

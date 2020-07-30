@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ticketapp/data/userService.dart';
 
 class MenuDrawer extends StatelessWidget {
-  const MenuDrawer({Key key}) : super(key: key);
+  final UserService _userService;
+
+  const MenuDrawer(this._userService, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: drawerRow()
+      child: drawerRow(context)
     );
   }
 
@@ -16,7 +19,7 @@ class MenuDrawer extends StatelessWidget {
     );
   }
 
-  Widget drawerRow(){ 
+  Widget drawerRow(BuildContext context){ 
     return ListView(
       children: <Widget>[
         title(),
@@ -24,17 +27,22 @@ class MenuDrawer extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.folder),
           title: Text("Tickets"),
-          onTap: (){},
+          onTap: (){
+            Navigator.pushReplacementNamed(context, '/');
+          },
         ),
         ListTile(
           leading: Icon(Icons.star),
           title: Text("Favoritos"),
-          onTap: (){}
+          onTap: (){
+          }
         ),
         ListTile(
           leading: Icon(Icons.person),
           title: Text("Ver Perfil"),
-          onTap: (){}
+          onTap: (){
+            Navigator.pushNamed(context, '/profile');
+          }
         ),
         ListTile(
           leading: Icon(Icons.settings),
@@ -45,7 +53,10 @@ class MenuDrawer extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.person_outline),
           title: Text("Cerrar Sesión"),
-          onTap: (){}
+          onTap: (){
+            this._userService.logout();
+            Navigator.pushReplacementNamed(context, '/');
+          }
         ),
       ]
     );

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ticketapp/data/userService.dart';
+import 'package:ticketapp/ui/common/drawer.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key key}) : super(key: key);
+	final UserService _userService;
+  const ProfilePage(this._userService,{Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +12,7 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Perfil'),
       ),
-      drawer: Container(child: Text("")),
+      drawer: MenuDrawer(_userService),
       body: SingleChildScrollView(child: ProfileWidget(),),
     );
   }

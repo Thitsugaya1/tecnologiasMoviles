@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert' as convert;
+import 'dart:io';
 
 class Utilities {
 
@@ -7,11 +9,7 @@ class Utilities {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            Image(
-              image: AssetImage('assets/loader.gif'),
-              width: 150,
-              height: 150,
-              )
+            CircularProgressIndicator()
           ],
           )
       )
@@ -36,5 +34,13 @@ class Utilities {
     );
   }
 
+  static Future<String> filepathToBase64(String path) async{
+    return fileToBase64(File(path));
+  }
+
+  static Future<String> fileToBase64(File file) async{
+    var bytes = await file.readAsBytes();
+    return Future.value(convert.base64Encode(bytes));
+  }
 
 }

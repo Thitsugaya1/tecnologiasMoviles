@@ -9,6 +9,7 @@ import 'package:ticketapp/ui/Utilities.dart';
 import 'package:ticketapp/ui/common/MapWidget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ticketapp/ui/common/AgregarImagenDialog.dart';
+import 'package:geocoder/geocoder.dart';
 
 class NewTicketForm extends StatefulWidget {
   final TicketService _service;
@@ -146,7 +147,6 @@ class _NewTicketFormState extends State<NewTicketForm> {
     assert(res == true);
     Navigator.pop(context);
     raiseSuccessModal();
-    //Navigator.pop(context);
   }
 
   Future<DateTime> openDataPicker() async {
@@ -235,13 +235,8 @@ class _NewTicketFormState extends State<NewTicketForm> {
         builder: (BuildContext context) {
           return AlertDialog(
               content: AgregarImagenDialog(),
-              title: Expanded(
-                child: Center(
-                  child: Container(
-                      color: Theme.of(context).primaryColor,
-                      child: Center(child: Text("Agregar Imagen"))),
-                ),
-              ));
+              title:  Center(child: Text("Agregar Imagen")),
+              );
         }).then((res) {
           if(res != null){
             setState((){
@@ -277,6 +272,8 @@ class _NewTicketFormState extends State<NewTicketForm> {
           loc.longitud.toString() +
           " " +
           loc.latitud.toString();
+      final dir = await Geocoder.local.findAddressesFromCoordinates(Coordinates(loc.latitud, loc.longitud));
+      loc.direccion = dir.first.addressLine;
     } catch (e) {
       print(e);
       loc.latitud = 0;

@@ -29,9 +29,13 @@ dependencies:
   cupertino_icons: ^0.1.3
 
   # Aditional Libraries
-  provider: ^3.0.0
   http: 
-  geolocator: 
+  geolocator:
+  google_maps_flutter:
+  camera:
+  path_provider:
+  path:
+  geocoder: 
 
 dev_dependencies:
   flutter_test:

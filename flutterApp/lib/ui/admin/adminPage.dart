@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/data/userService.dart';
 import 'package:ticketapp/ui/common/TicketList.dart';
+import 'package:ticketapp/ui/common/drawer.dart';
 
 class AdminMainpage extends StatefulWidget {
   final TicketService _ticketService;
@@ -43,6 +44,11 @@ class _AdminMainpageState extends State<AdminMainpage> {
       body: Center(
         child: TicketList(this.widget._ticketService, widget._userService),
       ),
+      drawer: drawer()
     );
+  }
+
+  Widget drawer(){
+    return MenuDrawer(widget._userService);
   }
 }

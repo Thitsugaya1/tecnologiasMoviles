@@ -16,6 +16,10 @@ class HttpService {
   Map<String, String> getHeaders(){
     return _headers;
   }
+
+  void removeAuthToken(){
+    _headers.remove('Authorization');
+  }
 }
 
 class ApiResponse {

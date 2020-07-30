@@ -12,7 +12,6 @@ class Ticket{
   DateTime dateTime;
   String user;
   int horaInicio;
-  double horaTermino;
   int estado;
   String comentario = '';
   GPSLocation direccion;
@@ -26,7 +25,6 @@ class Ticket{
     dateTime = DateTime.parse(json['dateTime']),
     user = json['user'],
     horaInicio = json['horaInicio'],
-    horaTermino = json['horaTermino'],
     estado = json['estado'],
     comentario = json['comentario'],
     direccion = (json['Direccion'] != null) ? GPSLocation.fromJson(json['Direccion']) : null;
@@ -36,7 +34,6 @@ class Ticket{
     'dateTime' : dateTime.toIso8601String(),
     'user' : user,
     'horaInicio' : horaInicio,
-    'horaTermino' : horaTermino,
     'estado' : estado,
     'comentario' :  comentario,
     'direccion' : direccion.toJson()

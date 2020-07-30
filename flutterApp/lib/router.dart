@@ -10,6 +10,7 @@ import 'package:ticketapp/ui/notImplementedPage.dart';
 import 'package:ticketapp/ui/user/userPage.dart';
 import 'package:ticketapp/ui/common/MapWidget.dart';
 import 'package:ticketapp/ui/common/TomarFoto.dart';
+import 'package:ticketapp/ui/common/perfil.dart';
 import 'package:camera/camera.dart';
 
 class RouteGenerator {
@@ -36,13 +37,15 @@ class RouteGenerator {
 
   Route<dynamic> clientRoutes(RouteSettings settings) {
     switch (settings.name) {
+      case 'TakeFoto':
+        return MaterialPageRoute(builder: (_) => TomarFoto(_camera));
       case '/':
         return MaterialPageRoute(
             builder: (_) => UserMainPage(_ticketService, _userService));
       case '/tickets/new':
         return MaterialPageRoute(builder: (_) => NewTicketForm(_ticketService));
-      case 'TakeFoto':
-        return MaterialPageRoute(builder: (_) => TomarFoto(_camera));
+			case '/profile':
+				return MaterialPageRoute(builder: (_) => ProfilePage(_userService));
       default:
         return notImplemented();
     }
@@ -50,10 +53,8 @@ class RouteGenerator {
 
   Route<dynamic> guestRoutes(RouteSettings settings) {
     switch (settings.name) {
-      case 'TakeFoto':
-        return MaterialPageRoute(builder: (_) => TomarFoto(_camera));
       default:
-        return MaterialPageRoute(builder: (_) => NewTicketForm(_ticketService));
+        return MaterialPageRoute(builder: (_) => Login(_userService));
     }
   }
 
@@ -61,7 +62,9 @@ class RouteGenerator {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
-            builder: (_) => AdminMainpage(_ticketService, _userService));
+          builder: (_) => AdminMainpage(_ticketService, _userService));
+      case '/profile':
+        return MaterialPageRoute(builder: (_) => ProfilePage(_userService));
       default:
         return notImplemented();
     }
