@@ -8,52 +8,66 @@ import 'package:ticketapp/ui/user/NewTicketForm.dart';
 import 'package:ticketapp/ui/login.dart';
 import 'package:ticketapp/ui/notImplementedPage.dart';
 import 'package:ticketapp/ui/user/userPage.dart';
+import 'package:ticketapp/ui/common/MapWidget.dart';
+import 'package:ticketapp/ui/common/TomarFoto.dart';
+import 'package:camera/camera.dart';
 
 class RouteGenerator {
   HttpService _httpService;
   UserService _userService;
   TicketService _ticketService;
-  RouteGenerator(this._httpService, this._userService, this._ticketService);
+  CameraDescription _camera;
+  RouteGenerator(
+      this._httpService, this._userService, this._ticketService, this._camera);
 
-  Route<dynamic> generateRoute(RouteSettings settings){
+  Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
-    switch (_userService.userRol){
+    switch (_userService.userRol) {
       case UserRol.Guest:
         return guestRoutes(settings);
       case UserRol.Client:
         return clientRoutes(settings);
       case UserRol.Admin:
         return adminRoutes(settings);
-      default: 
+      default:
         return MaterialPageRoute(builder: (_) => NotImplementedPage());
     }
   }
 
-  Route<dynamic> clientRoutes(RouteSettings settings){
-    switch(settings.name){
+  Route<dynamic> clientRoutes(RouteSettings settings) {
+    switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => UserMainPage(_ticketService, _userService) );
+        return MaterialPageRoute(
+            builder: (_) => UserMainPage(_ticketService, _userService));
       case '/tickets/new':
         return MaterialPageRoute(builder: (_) => NewTicketForm(_ticketService));
+      case 'TakeFoto':
+        return MaterialPageRoute(builder: (_) => TomarFoto(_camera));
       default:
         return notImplemented();
     }
   }
 
-  Route<dynamic> guestRoutes(RouteSettings settings){
-    return MaterialPageRoute(builder: (_) => Login(_userService));
+  Route<dynamic> guestRoutes(RouteSettings settings) {
+    switch (settings.name) {
+      case 'TakeFoto':
+        return MaterialPageRoute(builder: (_) => TomarFoto(_camera));
+      default:
+        return MaterialPageRoute(builder: (_) => NewTicketForm(_ticketService));
+    }
   }
 
-  Route<dynamic> adminRoutes(RouteSettings settings){
-    switch(settings.name){
+  Route<dynamic> adminRoutes(RouteSettings settings) {
+    switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => AdminMainpage(_ticketService,  _userService));
+        return MaterialPageRoute(
+            builder: (_) => AdminMainpage(_ticketService, _userService));
       default:
         return notImplemented();
     }
   }
 
-  Route<dynamic> notImplemented(){
+  Route<dynamic> notImplemented() {
     return MaterialPageRoute(builder: (_) => NotImplementedPage());
   }
 }

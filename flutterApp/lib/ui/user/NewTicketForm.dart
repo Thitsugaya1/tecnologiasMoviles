@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ticketapp/data/gpsLocation.dart';
 import 'package:ticketapp/data/ticket.dart';
 import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/ui/Utilities.dart';
+import 'package:ticketapp/ui/common/MapWidget.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ticketapp/ui/common/AgregarImagenDialog.dart';
 
 class NewTicketForm extends StatefulWidget {
   final TicketService _service;
@@ -21,6 +26,7 @@ class _NewTicketFormState extends State<NewTicketForm> {
   TimeOfDay endTimeOfDay;
   GPSLocation location;
   TicketService _service;
+  List<String> images = new List();
 
   _NewTicketFormState(this._service);
 
@@ -48,18 +54,46 @@ class _NewTicketFormState extends State<NewTicketForm> {
     );
   }
 
+  Widget Direccion(BuildContext context) {
+    List widgets = List<Widget>();
+    widgets.add(TextFormField(
+      decoration: InputDecoration(
+          icon: Icon(Icons.place),
+          hintText: "Direccion",
+          labelText: "Direccion"),
+      onTap: getGeo,
+      controller: directionTextController,
+    ));
+    if (this.location != null) {
+      assert(this.location.latitud != null);
+
+      //     widgets.add(MapWidget(
+      //        position: LatLng(this.location.latitud, this.location.longitud)));
+    }
+    return Column(children: widgets);
+  }
+
+  Widget imageprev(BuildContext context){
+    List<Widget> prevs = List();
+    for (var img in images) {
+      prevs.add(
+        Container(
+          width: 64,
+          height: 80,
+          margin: EdgeInsets.only(top: 5),
+          child: Image.file(File(img), width: 64, height: 64,),
+        )
+      );
+    }
+
+    return Row(children: prevs,);
+  } 
+
   Widget _pedirTicketForm(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(10),
       child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-        TextFormField(
-          decoration: InputDecoration(
-              icon: Icon(Icons.place),
-              hintText: "Direccion",
-              labelText: "Direccion"),
-          onTap: getGeo,
-          controller: directionTextController,
-        ),
+        Direccion(context),
         seleccionDateTimeDesde(initialDateController, initialDate,
             initialTimeOfDayController, initialTimeOfDay, "Desde", "Desde"),
         TextFormField(
@@ -68,16 +102,15 @@ class _NewTicketFormState extends State<NewTicketForm> {
           maxLines: null,
           minLines: 2,
         ),
+        imageprev(context),
         Row(children: [
           Expanded(
-            child: RaisedButton(
-              onPressed: openAgregarImageDialog,
-              color: Theme.of(context).primaryColor,
-              child: Container(
-                child:Text("Agregar Imagen"),
-              )
-            )
-          )
+              child: RaisedButton(
+                  onPressed: openAgregarImageDialog,
+                  color: Theme.of(context).primaryColor,
+                  child: Container(
+                    child: Text("Agregar Imagen"),
+                  )))
         ]),
         ButtonBar(children: <Widget>[
           FlatButton(onPressed: goBack, child: Text('Cancelar')),
@@ -86,8 +119,6 @@ class _NewTicketFormState extends State<NewTicketForm> {
       ]),
     );
   }
-
-  void openAgregarImageDialog() {}
 
   Future<void> checkDateDate(
       DateTime date, TextEditingController controller) async {
@@ -198,6 +229,29 @@ class _NewTicketFormState extends State<NewTicketForm> {
         });
   }
 
+  void openAgregarImageDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              content: AgregarImagenDialog(),
+              title: Expanded(
+                child: Center(
+                  child: Container(
+                      color: Theme.of(context).primaryColor,
+                      child: Center(child: Text("Agregar Imagen"))),
+                ),
+              ));
+        }).then((res) {
+          if(res != null){
+            setState((){
+              this.images.add(res);            
+            });
+          }
+      print(res);
+    });
+  }
+
   void raiseSuccessModal() {
     showDialog(
       context: context,
@@ -229,9 +283,12 @@ class _NewTicketFormState extends State<NewTicketForm> {
       loc.longitud = 0;
       loc.direccion = "placeholder";
     }
-    location = loc;
+
+    setState(() {
+      directionTextController.value =
+          directionTextController.value.copyWith(text: loc.direccion);
+      location = loc;
+    });
     Navigator.pop(context);
-    directionTextController.value =
-        directionTextController.value.copyWith(text: loc.direccion);
   }
 }
