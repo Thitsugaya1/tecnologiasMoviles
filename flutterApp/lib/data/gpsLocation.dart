@@ -11,19 +11,15 @@ class GPSLocation{
   GPSLocation.fromJson(Map<String, dynamic> json):
     latitud = json['latitud'],
     longitud = json['longitud'],
-    direccion = json['direccion'],
+    direccion = json['reverseGeoCode'],
     id = json['id'];
 
-  Map<String, dynamic> toJson() => {
-    'latitud' : latitud,
-    'longitud' : longitud,
-    'direccion' : direccion,
-    'id' : id
-  };
-
-  Map<String, dynamic> toJsonStub() => {
-    'latitud' : latitud,
-    'longitud' : longitud,
-    'direccion' : direccion
-  };
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> map = Map();
+    if(id != null) map['id'] = id;
+    if(latitud != null) map['latitud'] = latitud;
+    if(longitud != null) map['longitud'] = longitud;
+    if(direccion != null) map['reverseGeoCode'] = direccion;
+    return map;
+  }
 }

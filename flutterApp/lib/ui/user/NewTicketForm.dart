@@ -139,10 +139,16 @@ class _NewTicketFormState extends State<NewTicketForm> {
   Future<void> enviar() async {
     raiseLoadingModal();
     assert(initialTimeOfDay != null);
+    List<TicketImage> images = List(); 
+    for (var path in this.images) {
+      images.add(TicketImage(img: (await Utilities.filepathToBase64(path))));
+    }
     var ticket = Ticket();
     ticket.dateTime = initialDate;
     ticket.horaInicio = initialTimeOfDay.hour;
     ticket.direccion = location;
+    ticket.images = images;
+    ticket.audios = List();
     final res = await _service.post(ticket);
     assert(res == true);
     Navigator.pop(context);

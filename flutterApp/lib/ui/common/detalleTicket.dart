@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ticketapp/data/Models.dart';
 import 'package:ticketapp/data/ticket.dart';
@@ -100,10 +102,27 @@ class _DetalleTicketState extends State<DetalleTicket> {
             ),
             enabled: false,
             controller: direccionController,
-          )
+          ),
+          imagePreviews()
         ],
       )
     );
+  }
+
+  Widget imagePreviews(){
+    List<Widget> prevs = List();
+    for (var img in t.images) {
+      prevs.add(
+        Container(
+          width: 64,
+          height: 80,
+          margin: EdgeInsets.only(top: 5),
+          child: Image.memory(base64Decode(img.img))
+        )
+      );
+    }
+
+    return Row(children: prevs,);
   }
 
   Widget bottomRow(){

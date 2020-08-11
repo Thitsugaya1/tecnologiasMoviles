@@ -16,9 +16,9 @@ class TicketService {
   }
 
   Future<bool> resolverTicket(int id, int estado) async{
-    var params = { 'estado' : estado.toString() };
+    var query = {'id': id, 'estado': estado};
     var response = await http.post(
-      HttpService.BaseURL + Apartado + '/$id/estado?estado=$estado', 
+      HttpService.BaseURL + Apartado + '/estado?id=$id&estado=$estado', 
       headers: _httpService.getHeaders());
     assert(response.statusCode == 200);
     //TODO: Resolve errors.
@@ -38,8 +38,9 @@ class TicketService {
 
 
   Future<bool> post(Ticket ticket) async{
-    final ticketmap = ticket.toJsonStub();
+    final ticketmap = ticket.toJson();
     print(ticketmap);
+    var obj = convert.jsonEncode(ticketmap);
     var response = await http.post(HttpService.BaseURL + TicketService.Apartado, body: convert.jsonEncode(ticketmap), headers : _httpService.getHeaders());
     assert(response.statusCode == 200);
     if(response.statusCode == 200){
