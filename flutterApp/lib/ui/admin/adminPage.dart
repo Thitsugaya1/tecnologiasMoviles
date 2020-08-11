@@ -31,7 +31,7 @@ class _AdminMainpageState extends State<AdminMainpage> {
           IconButton(
             icon: Icon(Icons.replay),
             onPressed: (){
-                changeAction(2);
+                Navigator.pushReplacementNamed(context, '/');
             },
           ),
           Container(
