@@ -1,11 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:ticketapp/data/Models.dart';
 import 'package:ticketapp/data/ticket.dart';
 import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/data/userService.dart';
 import 'package:ticketapp/ui/Utilities.dart';
+import 'package:ticketapp/ui/common/AudioPlayer.dart';
 
 class TicketPage extends StatelessWidget {
   final Ticket t;
@@ -42,6 +42,7 @@ class _DetalleTicketState extends State<DetalleTicket> {
   final horaController = TextEditingController();
   final fechaController = TextEditingController();
   final direccionController = TextEditingController();
+  List<String> audios = List();
 
   _DetalleTicketState(this.t){
     this.clienteTextController.value = this.clienteTextController.value.copyWith(text: (t.user != null)? t.user : "Place Holder" );
@@ -67,6 +68,22 @@ class _DetalleTicketState extends State<DetalleTicket> {
        ),
     );
   }
+
+  @override
+  void initState() { 
+    super.initState();
+    _init();
+  }
+
+  void _init() async{
+    for (var au in t.audios) {
+      var path = await Utilities.base64ToAudioFilePath(au.au);
+      setState(() {
+        audios.add(path);
+      });
+    }
+  }
+
 
   Widget form(){
     return Container(
@@ -103,9 +120,29 @@ class _DetalleTicketState extends State<DetalleTicket> {
             enabled: false,
             controller: direccionController,
           ),
+          audioPreviews(context),
           imagePreviews()
         ],
       )
+    );
+  }
+
+  Widget audioPreviews(BuildContext context){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: audios.map((e) => 
+        Row(children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: MiniPlayer(e),
+          )
+        ],)
+      ).toList(),
     );
   }
 
@@ -148,6 +185,7 @@ class _DetalleTicketState extends State<DetalleTicket> {
       )
       );
   }
+
 
   void cancelTicket(){
     raiseLoadingModal();
