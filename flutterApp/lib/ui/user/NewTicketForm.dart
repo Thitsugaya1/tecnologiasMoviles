@@ -6,6 +6,7 @@ import 'package:ticketapp/data/gpsLocation.dart';
 import 'package:ticketapp/data/ticket.dart';
 import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/ui/Utilities.dart';
+import 'package:ticketapp/ui/common/AudioPlayer.dart';
 import 'package:ticketapp/ui/common/MapWidget.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ticketapp/ui/common/AgregarImagenDialog.dart';
@@ -28,6 +29,7 @@ class _NewTicketFormState extends State<NewTicketForm> {
   GPSLocation location;
   TicketService _service;
   List<String> images = new List();
+  List<String> audios = new List();
 
   _NewTicketFormState(this._service);
 
@@ -103,15 +105,26 @@ class _NewTicketFormState extends State<NewTicketForm> {
           maxLines: null,
           minLines: 2,
         ),
+        audioprev(context),
         imageprev(context),
         Row(children: [
           Expanded(
-              child: RaisedButton(
-                  onPressed: openAgregarImageDialog,
-                  color: Theme.of(context).primaryColor,
-                  child: Container(
-                    child: Text("Agregar Imagen"),
-                  )))
+            child: RaisedButton(
+                onPressed: openAgregarImageDialog,
+                color: Theme.of(context).primaryColor,
+                child: Container(
+                  child: Text("Agregar Imagen"),
+                  )
+                )
+          ),
+          Expanded(
+            child: RaisedButton(
+              child: Text("Agregar Audio"),
+              onPressed: _openAgregarAudio,
+              color: Theme.of(context).primaryColor,
+            )
+          )
+
         ]),
         ButtonBar(children: <Widget>[
           FlatButton(onPressed: goBack, child: Text('Cancelar')),
@@ -136,24 +149,7 @@ class _NewTicketFormState extends State<NewTicketForm> {
     Navigator.pop(context);
   }
 
-  Future<void> enviar() async {
-    raiseLoadingModal();
-    assert(initialTimeOfDay != null);
-    List<TicketImage> images = List(); 
-    for (var path in this.images) {
-      images.add(TicketImage(img: (await Utilities.filepathToBase64(path))));
-    }
-    var ticket = Ticket();
-    ticket.dateTime = initialDate;
-    ticket.horaInicio = initialTimeOfDay.hour;
-    ticket.direccion = location;
-    ticket.images = images;
-    ticket.audios = List();
-    final res = await _service.post(ticket);
-    assert(res == true);
-    Navigator.pop(context);
-    raiseSuccessModal();
-  }
+  
 
   Future<DateTime> openDataPicker() async {
     return showDatePicker(
@@ -293,5 +289,83 @@ class _NewTicketFormState extends State<NewTicketForm> {
       location = loc;
     });
     Navigator.pop(context);
+  }
+
+  void _openAgregarAudio(){
+    showDialog(
+      context: context,
+      child: Utilities.recordAudio()
+      ).then(_processAudio);
+  }
+
+  void _processAudio(value){
+    if(value != null){
+      setState(() {
+        audios.add(value);
+      });
+    }
+  }
+
+  Widget audioprev(BuildContext context){
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        
+        children: audios.map((e) => Row(
+          children: [
+            Expanded(
+              child: Container(
+                child: MiniPlayer(e),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  borderRadius: BorderRadius.circular(20)
+                ),
+              ),
+            ),
+            Container(
+              child: IconButton(icon: Icon(Icons.delete), onPressed: (){ 
+                setState((){
+                  audios.remove(e);
+                });
+              }),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).primaryColor
+                ),
+                borderRadius: BorderRadius.circular(20)
+              )
+            )
+          ],
+        )).toList()
+      ),
+    );
+
+  }
+
+
+  Future<void> enviar() async {
+    raiseLoadingModal();
+    assert(initialTimeOfDay != null);
+    List<TicketImage> images = List(); 
+    List<TicketAudio> aus = List();
+    for (var path in this.images) {
+      images.add(TicketImage(img: (await Utilities.filepathToBase64(path))));
+    }
+    for (var path in this.audios) {
+      aus.add(TicketAudio(au: (await Utilities.filepathToBase64(path))));
+    }
+    var ticket = Ticket();
+    ticket.dateTime = initialDate;
+    ticket.horaInicio = initialTimeOfDay.hour;
+    ticket.direccion = location;
+    ticket.images = images;
+    ticket.audios = aus;
+    final res = await _service.post(ticket);
+    assert(res == true);
+    Navigator.pop(context);
+    raiseSuccessModal();
   }
 }

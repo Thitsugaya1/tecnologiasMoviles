@@ -32,7 +32,7 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _recorder.stop();
+    _recorder?.stop();
     _t.cancel();
   }
 
@@ -46,10 +46,11 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
-              startButton(context),
-              pauseButton(context),
-              stopButton(context)
+              Expanded(child: startButton(context)),
+              Expanded(child: pauseButton(context)),
+              Expanded(child: stopButton(context))
               ],),
               player(context),
               bottomBar(context),
@@ -113,6 +114,9 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
 
 
   void _stop() async {
+    if(_recordingStatus != RecordingStatus.Recording){
+      return ;
+    }
     var result = await _recorder.stop();
     print('stop recording: ${result.path} :: ${result.duration}');
     setState(() {
@@ -180,7 +184,9 @@ class _RecordAudioWidgetState extends State<RecordAudioWidget> {
     return ButtonBar(
       children: [
         FlatButton(child: Text("Cancel"), onPressed: (){
+          _stop();
           Navigator.pop(context);
+          this.dispose();
         },),
         RaisedButton(
           child: Text("Aceptar"),

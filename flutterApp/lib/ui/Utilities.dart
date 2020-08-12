@@ -2,7 +2,18 @@ import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'dart:io';
 
+import 'package:ticketapp/ui/common/RecordAudio.dart';
+
 class Utilities {
+
+  static AlertDialog recordAudio(){
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: RecordAudioWidget()
+      ),
+      contentPadding: EdgeInsets.all(2),
+    );
+  }
 
   static AlertDialog loadingAlert(){
     return AlertDialog(
