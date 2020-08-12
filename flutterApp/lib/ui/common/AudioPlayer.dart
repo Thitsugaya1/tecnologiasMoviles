@@ -146,3 +146,47 @@ class _AudioPlayerState extends State<AudioPlayer> {
     }
   }
 }
+
+
+class MiniPlayer extends AudioPlayer {
+  MiniPlayer(String audiopath, {Key key}) : super(audiopath, key: key);
+
+  @override
+  _MiniPlayerState createState() => _MiniPlayerState();
+}
+
+class _MiniPlayerState extends _AudioPlayerState {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        playButton(context),
+        slider(context)
+      ],
+    );
+  }
+
+  Widget slider(BuildContext context){
+    return Slider(
+      onChanged: (v) {
+        Duration position = Duration(milliseconds: (v * _duration?.inMilliseconds ?? 0).round());
+        _player.seek(position);
+      },
+      value: (_position != null && 
+              _duration != null && 
+              _position.inMilliseconds > 0 && 
+              _position < _duration ) ? _position.inMilliseconds / _duration.inMilliseconds : 0,
+    );
+  }
+
+  Widget playButton(BuildContext context){
+    return (_playerState == players.AudioPlayerState.PLAYING) ?
+      IconButton(
+        icon: Icon(Icons.stop),
+        onPressed: _stop) :
+      IconButton(
+        icon: Icon(Icons.play_arrow),
+        onPressed: _play,);
+  }
+}
