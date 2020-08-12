@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'dart:io';
 
+
+import 'package:path/path.dart' as Path;
+import 'package:path_provider/path_provider.dart';
 import 'package:ticketapp/ui/common/RecordAudio.dart';
 
 class Utilities {
@@ -52,6 +55,15 @@ class Utilities {
   static Future<String> fileToBase64(File file) async{
     var bytes = await file.readAsBytes();
     return Future.value(convert.base64Encode(bytes));
+  }
+
+  static Future<String> base64ToAudioFilePath(String base64) async{
+    var bytes = convert.base64Decode(base64);
+    final path = Path.join(
+          (await getTemporaryDirectory()).path, '${DateTime.now().millisecondsSinceEpoch}.m4a');
+    var file = File(path);
+    await file.writeAsBytes(bytes);
+    return path;
   }
 
 }
