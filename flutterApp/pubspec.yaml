@@ -36,6 +36,9 @@ dependencies:
   path_provider:
   path:
   geocoder: 
+  flutter_local_notifications: 
+  audioplayers: 
+  flutter_audio_recorder:
 
 dev_dependencies:
   flutter_test:
