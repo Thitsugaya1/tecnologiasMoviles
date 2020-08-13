@@ -3,7 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 
 class MapWidget extends StatefulWidget {
-  LatLng position;
+  final LatLng position;
   MapWidget({Key key, this.position = const LatLng(-34.9780, -71.2529)})
       : super(key: key);
   @override

@@ -48,6 +48,13 @@ class Utilities {
     );
   }
 
+  static AlertDialog imageDialog(Image img){
+    return AlertDialog(
+      content: img,
+      contentPadding: EdgeInsets.all(0),
+    );
+  }
+
   static Future<String> filepathToBase64(String path) async{
     return fileToBase64(File(path));
   }

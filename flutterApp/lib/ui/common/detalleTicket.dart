@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ticketapp/data/Models.dart';
 import 'package:ticketapp/data/ticket.dart';
 import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/data/userService.dart';
 import 'package:ticketapp/ui/Utilities.dart';
 import 'package:ticketapp/ui/common/AudioPlayer.dart';
+import 'package:ticketapp/ui/common/MapWidget.dart';
 
 class TicketPage extends StatelessWidget {
   final Ticket t;
@@ -120,10 +122,20 @@ class _DetalleTicketState extends State<DetalleTicket> {
             enabled: false,
             controller: direccionController,
           ),
+          mapPreview(context),
+          Padding(padding: EdgeInsets.all(8),),
           audioPreviews(context),
+          Padding(padding: EdgeInsets.all(8),),
           imagePreviews()
         ],
       )
+    );
+  }
+
+  Widget mapPreview(BuildContext context){
+    return Container(
+      height: 240,
+      child: MapWidget(position: LatLng(t.direccion.latitud, t.direccion.longitud))
     );
   }
 
@@ -133,15 +145,18 @@ class _DetalleTicketState extends State<DetalleTicket> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: audios.map((e) => 
-        Row(children: [
+        Wrap(children: [
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.circular(20),
             ),
             child: MiniPlayer(e),
-          )
-        ],)
+          ),
+          Padding(padding: EdgeInsets.all(4),)
+        ],
+        runSpacing: 5,
+        )
       ).toList(),
     );
   }
@@ -150,16 +165,23 @@ class _DetalleTicketState extends State<DetalleTicket> {
     List<Widget> prevs = List();
     for (var img in t.images) {
       prevs.add(
-        Container(
-          width: 64,
-          height: 80,
-          margin: EdgeInsets.only(top: 5),
-          child: Image.memory(base64Decode(img.img))
+        GestureDetector(
+          onTap: () =>_openImage(img.img),
+          child: Container(
+            width: 64,
+            height: 80,
+            margin: EdgeInsets.only(top: 5),
+            child: Image.memory(base64Decode(img.img))
+          ),
         )
       );
     }
 
     return Row(children: prevs,);
+  }
+
+  void _openImage(String img){
+    showDialog(context: context, child: Utilities.imageDialog(Image.memory(base64Decode(img))));
   }
 
   Widget bottomRow(){
