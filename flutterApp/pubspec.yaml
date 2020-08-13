@@ -39,6 +39,7 @@ dependencies:
   flutter_local_notifications: 
   audioplayers: 
   flutter_audio_recorder:
+  local_auth:
 
 dev_dependencies:
   flutter_test:

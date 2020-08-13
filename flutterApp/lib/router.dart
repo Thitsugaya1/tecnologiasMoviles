@@ -4,6 +4,8 @@ import 'package:ticketapp/data/httpService.dart';
 import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/data/userService.dart';
 import 'package:ticketapp/ui/admin/adminPage.dart';
+import 'package:ticketapp/ui/common/TestPage.dart';
+import 'package:ticketapp/ui/localauth.dart';
 import 'package:ticketapp/ui/user/NewTicketForm.dart';
 import 'package:ticketapp/ui/login.dart';
 import 'package:ticketapp/ui/notImplementedPage.dart';
@@ -46,6 +48,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => NewTicketForm(_ticketService));
 			case '/profile':
 				return MaterialPageRoute(builder: (_) => ProfilePage(_userService));
+      case '/local_auth':
+        return MaterialPageRoute(builder: (_) => LocalAuth(_userService));
       default:
         return notImplemented();
     }
@@ -55,6 +59,7 @@ class RouteGenerator {
     switch (settings.name) {
       default:
         return MaterialPageRoute(builder: (_) => Login(_userService));
+         //   TestPage(_ticketService));
     }
   }
 
@@ -65,6 +70,8 @@ class RouteGenerator {
           builder: (_) => AdminMainpage(_ticketService, _userService));
       case '/profile':
         return MaterialPageRoute(builder: (_) => ProfilePage(_userService));
+      case '/local_auth':
+        return MaterialPageRoute(builder: (_) => LocalAuth(_userService));
       default:
         return notImplemented();
     }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ticketapp/data/ticketService.dart';
 import 'package:ticketapp/data/userService.dart';
+import 'package:ticketapp/ui/WigetBindingObserver.dart';
 import 'package:ticketapp/ui/common/TicketList.dart';
 import 'package:ticketapp/ui/common/drawer.dart';
 
-class AdminMainpage extends StatefulWidget {
+class AdminMainpage extends StatefulWidget{
   final TicketService _ticketService;
   final UserService _userService;
   AdminMainpage(this._ticketService, this._userService, {Key key}) : super(key: key);
@@ -13,7 +14,7 @@ class AdminMainpage extends StatefulWidget {
   _AdminMainpageState createState() => _AdminMainpageState();
 }
 
-class _AdminMainpageState extends State<AdminMainpage> {
+class _AdminMainpageState extends AppStateObserverState<AdminMainpage> {
   int action = 0;
   
   changeAction(int action){
@@ -21,6 +22,7 @@ class _AdminMainpageState extends State<AdminMainpage> {
       this.action = action;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
